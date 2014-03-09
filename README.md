@@ -23,4 +23,4 @@ Other libraries used are included in the `libs` folder
 - Joda Time
 - JSON.simple
 
-Also included as library are the set of API libraries for the University of Nottingham information, which includes the **Student Now** framework. 
+Also included as library are the set of APIs for the University of Nottingham information, which includes the **Student Now** framework. 
