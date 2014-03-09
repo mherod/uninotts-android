@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.uninottstt.android"
+    package="org.uninotts.android"
     android:versionCode="1"
     android:versionName="0.0.1" >
 
@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="com.studentnow.android.permission.C2D_MESSAGE" />
+    <uses-permission android:name="org.uninotts.android.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -26,7 +26,7 @@
         android:theme="@style/AppTheme" android:logo="@drawable/ic_launcher2">
         
         <activity
-            android:name="org.uninottstt.android.MainActivity"
+            android:name="org.uninotts.android.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" >
@@ -42,69 +42,69 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.uninottstt.android.SettingsActivity"
+            android:name="org.uninotts.android.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="org.uninottstt.android.MainActivity" >
+            android:parentActivityName="org.uninotts.android.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.uninottstt.android.CardActivity" />
+                android:value="org.uninotts.android.MainActivity" />
         </activity>
         <activity
-            android:name="org.uninottstt.android.CreditActivity"
+            android:name="org.uninotts.android.CreditActivity"
             android:label="@string/title_activity_credit"
-            android:parentActivityName="org.uninottstt.android.MainActivity" >
+            android:parentActivityName="org.uninotts.android.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.uninottstt.android.CardActivity" />
+                android:value="org.uninottstt.android.MainActivity" />
         </activity>
         <activity
-            android:name="org.uninottstt.SessionActivity"
+            android:name="org.uninotts.android.SessionActivity"
             android:label="@string/title_activity_session"
-            android:parentActivityName="org.uninottstt.CardActivity" >
+            android:parentActivityName="org.uninotts.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.herod.studentnow.CardActivity" />
+                android:value="org.uninotts.android.MainActivity" />
         </activity>
         <activity
-            android:name="org.uninottstt.android.SetupActivity"
+            android:name="org.uninotts.android.SetupActivity"
             android:label="@string/title_activity_setup_programme"
             android:launchMode="singleTask"
-            android:parentActivityName="org.uninottstt.android.MainActivity" >
+            android:parentActivityName="org.uninotts.android.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.uninottstt.android.CardActivity" />
+                android:value="org.uninotts.android.MainActivity" />
         </activity>
         <activity
-            android:name="org.uninottstt.android.LoginActivity"
+            android:name="org.uninotts.android.LoginActivity"
             android:label="@string/title_activity_login"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
-            android:name="org.uninottstt.InstitutionSelectActivity"
+            android:name="org.uninotts.InstitutionSelectActivity"
             android:label="@string/title_activity_institution_select"
-            android:parentActivityName="org.uninottstt.android.SetupActivity"
+            android:parentActivityName="org.uninotts.android.SetupActivity"
             android:theme="@style/FullHeightDialog" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.uninottstt.android.SetupActivity" />
+                android:value="org.uninotts.android.SetupActivity" />
         </activity>
         <activity
-            android:name="org.uninottstt.android.CourseSelectActivity"
+            android:name="org.uninotts.android.CourseSelectActivity"
             android:label="@string/title_activity_course_search"
-            android:parentActivityName="org.uninottstt.android.MainActivity" >
+            android:parentActivityName="org.uninotts.android.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.uninottstt.android.CardActivity" />
+                android:value="org.uninotts.android.MainActivity" />
         </activity>
 
         <service
-            android:name="org.uninottstt.android.service.LiveService"
+            android:name="org.uninotts.android.service.LiveService"
             android:enabled="true" >
         </service>
 
         <receiver
-            android:name="org.uninottstt.android.LiveServiceStartReceiver"
+            android:name="org.uninotts.android.LiveServiceStartReceiver"
             android:enabled="true" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
