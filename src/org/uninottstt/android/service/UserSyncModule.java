@@ -18,7 +18,7 @@ import org.studentnow.util.SuppressionPeriod;
 import org.studentnow.util.UpdateHold;
 import org.uninotts.timetabling.UniNottsCardsProvider;
 import org.uninotts.timetabling.UniNottsInformationProvider;
-import org.uninottstt.android.CardActivity;
+import org.uninottstt.android.MainActivity;
 import org.uninottstt.android.__;
 import org.uninottstt.android.service.LocationCache.CachedLoc;
 import org.uninottstt.android.util.ConnectionDetector;
@@ -195,7 +195,7 @@ public class UserSyncModule extends ServiceModule {
 					String c = "No network connection - retry in " + r / 1000
 							+ "s";
 					Log.e(TAG, c);
-					CardActivity.showAlert(mLiveService, c);
+					MainActivity.showAlert(mLiveService, c);
 					return;
 				}
 
@@ -263,7 +263,7 @@ public class UserSyncModule extends ServiceModule {
 					long r = cardSuppressionPeriod.suppress();
 					String c = "Refresh error - retry in " + r / 1000 + "s";
 					Log.e(TAG, c);
-					CardActivity.showAlert(mLiveService, c);
+					MainActivity.showAlert(mLiveService, c);
 				}
 			}
 		}

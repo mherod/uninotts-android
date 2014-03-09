@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.studentnow.ECard;
 import org.studentnow.Static.Fields;
-import org.uninottstt.android.CardActivity;
+import org.uninottstt.android.MainActivity;
 import org.uninottstt.android.CourseSelectActivity;
 import org.uninottstt.android.R;
 import org.uninottstt.android.VECard;
@@ -123,7 +123,7 @@ public class CardProviderModule extends ServiceModule {
 		// "com.google.android.apps.maps",
 		// "com.google.android.maps.MapsActivity");
 		// }
-		return new Intent(mLiveService, CardActivity.class);
+		return new Intent(mLiveService, MainActivity.class);
 	}
 
 	private void maintainLocalCards() {

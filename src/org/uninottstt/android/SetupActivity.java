@@ -95,7 +95,7 @@ public class SetupActivity extends FragmentActivity implements
 			// finish();
 			// return true;
 		case R.id.action_exit:
-			CardActivity.finishAll(this);
+			MainActivity.finishAll(this);
 			finish();
 			return true;
 		}
@@ -119,7 +119,7 @@ public class SetupActivity extends FragmentActivity implements
 			mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
 			return;
 		}
-		CardActivity.finishAll(this);
+		MainActivity.finishAll(this);
 		super.onBackPressed();
 	}
 
@@ -134,7 +134,7 @@ public class SetupActivity extends FragmentActivity implements
 	// }
 
 	protected void finishSelections() {
-		startActivity(new Intent(this, CardActivity.class));
+		startActivity(new Intent(this, MainActivity.class));
 		finish();
 	}
 

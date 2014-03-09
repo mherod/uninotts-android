@@ -92,7 +92,7 @@ public class LoginActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 
-		CardActivity.finishAll(this);
+		MainActivity.finishAll(this);
 
 		serviceLink.start();
 	}
@@ -238,7 +238,7 @@ public class LoginActivity extends Activity {
 					setResult(RESULT_OK, new Intent());
 
 					startActivity(new Intent(LoginActivity.this,
-							CardActivity.class));
+							MainActivity.class));
 
 					finish();
 					break;

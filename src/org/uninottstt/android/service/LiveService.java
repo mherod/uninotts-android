@@ -3,7 +3,7 @@ package org.uninottstt.android.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.uninottstt.android.CardActivity;
+import org.uninottstt.android.MainActivity;
 import org.uninottstt.android.__;
 
 import android.app.Service;
@@ -144,7 +144,7 @@ public class LiveService extends Service implements Runnable {
 	@Override
 	public void onDestroy() {
 		Log.i(TAG, "Closing activity...");
-		CardActivity.finishAll(this);
+		MainActivity.finishAll(this);
 
 		Log.i(TAG, "Closing service...");
 		for (ServiceModule m : modules) {
