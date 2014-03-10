@@ -138,7 +138,9 @@ public class MainActivity extends Activity implements Runnable {
 	private class DrawerItemClickListener implements
 			ListView.OnItemClickListener {
 		@Override
-		public void onItemClick(@SuppressWarnings("rawtypes") AdapterView parent, View view, int pos, long id) {
+		public void onItemClick(
+				@SuppressWarnings("rawtypes") AdapterView parent, View view,
+				int pos, long id) {
 			selectItem(pos);
 		}
 	}
