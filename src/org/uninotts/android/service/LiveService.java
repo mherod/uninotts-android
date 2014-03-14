@@ -16,6 +16,8 @@ public class LiveService extends Service implements Runnable {
 
 	private final String TAG = LiveService.class.getSimpleName();
 
+	private ServiceNotificationModule serviceNotificationModule = null;
+
 	private final Runnable mNetworkOpsRunnable = new Runnable() {
 		@Override
 		public void run() {
@@ -54,6 +56,13 @@ public class LiveService extends Service implements Runnable {
 		if (!mNetworkOpsThread.isAlive()) {
 			mNetworkOpsThread.start();
 		}
+
+		if (serviceNotificationModule == null) {
+			serviceNotificationModule = new ServiceNotificationModule(this);
+		}
+		startForeground(ServiceNotificationModule.NOTIFICATION_ID,
+				serviceNotificationModule.create(this));
+
 		return START_STICKY;
 	}
 
@@ -63,13 +72,15 @@ public class LiveService extends Service implements Runnable {
 		sendBroadcast(new Intent(__.INTENT_CONNECT_SERVICE));
 
 		modules.add(new AccountModule(this));
-		
+
 		modules.add(new UserSyncModule(this));
-		
+
 		modules.add(new CardProviderModule(this));
 		modules.add(new NotificationModule(this));
 		modules.add(new LocationModule(this));
 		modules.add(new SignatureCheckModule(this));
+
+		modules.add(serviceNotificationModule);
 
 		for (ServiceModule m : modules) {
 			m.link();
