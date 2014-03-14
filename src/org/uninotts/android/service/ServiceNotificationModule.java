@@ -69,14 +69,14 @@ public class ServiceNotificationModule extends ServiceModule {
 		final Resources res = context.getResources();
 
 		final Bitmap picture = BitmapFactory.decodeResource(res,
-				R.drawable.example_picture);
+				R.drawable.ic_stat_uninotts_white);
 
 		final String title = res.getString(R.string.uni_nottingham);
 
 		final NotificationCompat.Builder builder = new NotificationCompat.Builder(
 				context)
 				.setDefaults(Notification.DEFAULT_ALL)
-				.setSmallIcon(R.drawable.ic_launcher2)
+				.setSmallIcon(R.drawable.ic_stat_uninotts_white)
 				.setContentTitle(title)
 				.setContentText(notificationText)
 				.setPriority(NotificationCompat.PRIORITY_MIN)
