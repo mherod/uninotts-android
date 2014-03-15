@@ -1,6 +1,8 @@
 package org.uninotts.android.service;
 
+import org.studentnow.ECard;
 import org.studentnow.util.UpdateHold;
+import org.uninotts.android.CardNotification;
 import org.uninotts.android.MainActivity;
 import org.uninotts.android.R;
 
@@ -15,17 +17,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 public class ServiceNotificationModule extends ServiceModule {
 
-	public static final String TAG = ServiceNotificationModule.class.getSimpleName();
+	public static final String TAG = ServiceNotificationModule.class
+			.getSimpleName();
 
 	public static final int NOTIFICATION_ID = 1;
 
 	private static final int updateInterval = 20 * 60 * 1000;
 
 	private LiveService mLiveService = null;
-	
+
 	private NotificationManager mNotificationManager;
 
 	private CardProviderModule mCardModule;
@@ -38,7 +42,7 @@ public class ServiceNotificationModule extends ServiceModule {
 	public void link() {
 		mNotificationManager = (NotificationManager) mLiveService
 				.getSystemService(Context.NOTIFICATION_SERVICE);
-		
+
 		mCardModule = ((CardProviderModule) mLiveService
 				.getServiceModule(CardProviderModule.class));
 	}
@@ -49,8 +53,10 @@ public class ServiceNotificationModule extends ServiceModule {
 	}
 
 	private UpdateHold updateHold = new UpdateHold();
-	
+
 	private int notificationNumber = 0;
+	
+	private String notificationTitle = "University of Nottingham";	
 	private String notificationText = "Starting up...";
 
 	@Override
@@ -58,9 +64,13 @@ public class ServiceNotificationModule extends ServiceModule {
 		if (updateHold.isDue(updateInterval)) {
 			updateHold.update();
 
+			for (ECard c : mCardModule.getCards()) {
+				notificationTitle = c.getTitle();
+				notificationText = c.getDesc();
+				break;
+			}
 			notificationNumber = mCardModule.getCards().size();
-			notificationText = notificationNumber + " cards";
-			
+
 			mNotificationManager.notify(NOTIFICATION_ID, create(mLiveService));
 		}
 	}
@@ -77,7 +87,7 @@ public class ServiceNotificationModule extends ServiceModule {
 				context)
 				.setDefaults(Notification.DEFAULT_ALL)
 				.setSmallIcon(R.drawable.ic_stat_uninotts_white)
-				.setContentTitle(title)
+				.setContentTitle(notificationTitle)
 				.setContentText(notificationText)
 				.setPriority(NotificationCompat.PRIORITY_MIN)
 				.setLargeIcon(picture)
