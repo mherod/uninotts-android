@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class CopyOfCardsFragment extends Fragment {
+public class CalendarFragment extends Fragment {
 
 	private MainActivity mCardActivity;
 
@@ -17,7 +17,7 @@ public class CopyOfCardsFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		return inflater.inflate(R.layout.drawer_list_item, container, false);
+		return inflater.inflate(R.layout.fragment_calendar, container, false);
 	}
 
 	@Override

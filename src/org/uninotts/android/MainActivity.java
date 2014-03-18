@@ -414,7 +414,7 @@ public class MainActivity extends Activity implements Runnable {
 			case 0:
 				return new CardsFragment();
 			case 1:
-				return new CopyOfCardsFragment();
+				return new CalendarFragment();
 			}
 			return null;
 		}
