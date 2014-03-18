@@ -1,7 +1,7 @@
 package org.uninotts.android;
 
 import org.studentnow.ECard;
-import org.studentnow.Static.Fields;
+import org.studentnow.ProgressAdapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -75,38 +75,30 @@ public class VECard extends Card {
 			}
 		}
 		if (ecard != null) {
-			if (ecard.hasProgressInfo()) {
+			ProgressAdapter progressAdapter = ecard.getProgressAdapter();
+			if (progressAdapter != null && progressAdapter.prepare()) {
 				View v = view.findViewById(R.id.card_part_progress);
 				if (v != null) {
 					v.setVisibility(View.VISIBLE);
 				}
-				int progress = ecard.getProgressPercentage(now);
+				int current = progressAdapter.getCurrent(), max = progressAdapter
+						.getMax();
 				ProgressBar mProgressBar = ((ProgressBar) view
 						.findViewById(R.id.progressBar00));
 				if (mProgressBar != null) {
-					mProgressBar.setMax(100);
-					mProgressBar.setProgress(progress);
+					mProgressBar.setMax(max);
+					mProgressBar.setProgress(current);
+					if (progressAdapter.isCancelled()) {
+						mProgressBar.getProgressDrawable().setColorFilter(
+								Color.RED, Mode.SRC_IN);
+					}
 				}
 
-				if (ecard.has(Fields.PROGRESS_CANCELLED)) {
-					mProgressBar.getProgressDrawable().setColorFilter(
-							Color.RED, Mode.SRC_IN);
-				}
+				((TextView) view.findViewById(R.id.progressStartLabel))
+						.setText(progressAdapter.getLeftString());
+				((TextView) view.findViewById(R.id.progressEndLabel))
+						.setText(progressAdapter.getRightString());
 
-				String progressStartLabel = ecard
-						.getString(Fields.PROGRESS_LABEL_START);
-				String progressEndLabel = ecard
-						.getString(Fields.PROGRESS_LABEL_END);
-				TextView progressStartLabelView = (TextView) view
-						.findViewById(R.id.progressStartLabel);
-				TextView progressEndLabelView = (TextView) view
-						.findViewById(R.id.progressEndLabel);
-				if (nNull(progressStartLabel, progressStartLabelView)) {
-					progressStartLabelView.setText(progressStartLabel);
-				}
-				if (nNull(progressEndLabel, progressEndLabelView)) {
-					progressEndLabelView.setText(progressEndLabel);
-				}
 			}
 		}
 		return view;
