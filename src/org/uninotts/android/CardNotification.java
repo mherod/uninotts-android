@@ -61,8 +61,8 @@ public class CardNotification {
 
 				// Set required fields, including the small icon, the
 				// notification title, and text.
-				.setSmallIcon(R.drawable.ic_stat_card).setContentTitle(title)
-				.setContentText(text)
+				.setSmallIcon(R.drawable.ic_stat_uninotts_white)
+				.setContentTitle(title).setContentText(text)
 
 				// All fields below this line are optional.
 

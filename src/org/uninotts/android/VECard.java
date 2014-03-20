@@ -27,7 +27,7 @@ public class VECard extends Card {
 	}
 
 	public VECard(ECard ecard) {
-		this.ecard = ecard;
+		this.ecard = ecard;		
 		if (ecard != null) {
 			title = ecard.getTitle();
 			desc = ecard.getDesc();
@@ -36,8 +36,6 @@ public class VECard extends Card {
 
 	@Override
 	public View getCardContent(Context context) {
-		long now = System.currentTimeMillis();
-
 		View view = LayoutInflater.from(context).inflate(R.layout.card_content,
 				null);
 
@@ -61,8 +59,8 @@ public class VECard extends Card {
 			ImageView v = (ImageView) view.findViewById(R.id.imageView_ct);
 			if (v != null) {
 				v.setVisibility(View.VISIBLE);
+				v.setImageBitmap(mainBitmap);
 			}
-			v.setImageBitmap(mainBitmap);
 		}
 		if (bottomBitmap != null) {
 			View v = view.findViewById(R.id.card_part_map);
@@ -98,6 +96,8 @@ public class VECard extends Card {
 						.setText(progressAdapter.getLeftString());
 				((TextView) view.findViewById(R.id.progressEndLabel))
 						.setText(progressAdapter.getRightString());
+				((TextView) view.findViewById(R.id.progressMidLabel))
+						.setText(progressAdapter.getMiddleString());
 
 			}
 		}
@@ -110,15 +110,6 @@ public class VECard extends Card {
 
 	public void setBottomBitmap(Bitmap b) {
 		bottomBitmap = b;
-	}
-
-	private boolean nNull(Object... os) {
-		for (Object o : os) {
-			if (o == null) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 }

@@ -4,10 +4,13 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.studentnow.ECard;
 import org.studentnow.Static.Fields;
+import org.studentnow.util.Time;
+import org.studentnow.util.UpdateHold;
 import org.uninotts.android.CourseSelectActivity;
 import org.uninotts.android.MainActivity;
 import org.uninotts.android.R;
@@ -48,6 +51,8 @@ public class CardProviderModule extends ServiceModule {
 	private List<ECard> cards = new ArrayList<ECard>();
 	private final HashMap<String, Bitmap> bitmaps = new HashMap<String, Bitmap>();
 
+	private UpdateHold maintainanceThrottle = new UpdateHold(60 * 1000);
+
 	public CardProviderModule(LiveService pLiveService) {
 		mLiveService = pLiveService;
 	}
@@ -67,7 +72,10 @@ public class CardProviderModule extends ServiceModule {
 
 	@Override
 	public void cycle() {
-		maintainLocalCards();
+		if (maintainanceThrottle.isDue()) {
+			maintainanceThrottle.update();
+			maintainCards();
+		}
 		processRequests();
 	}
 
@@ -126,12 +134,16 @@ public class CardProviderModule extends ServiceModule {
 		return new Intent(mLiveService, MainActivity.class);
 	}
 
-	private void maintainLocalCards() {
-		// List<ECard> cards = getCards();
-		// int removedCount = Cards.maintainLocalCards(cards);
-		// if (removedCount > 0) {
-		// Log.i(TAG, "Removed " + removedCount + " expired cards");
-		// }
+	private void maintainCards() {
+		Iterator<ECard> cardsIterator = getCards().iterator();
+		long time = Time.getNowLong();
+		while (cardsIterator.hasNext()) {
+			ECard c = cardsIterator.next();
+			if (c.hasExpiryTime() && time > c.getExpiryTime()) {
+				cardsIterator.remove();
+				Log.i(TAG, "Removed card: " + c.getTitle());
+			}
+		}
 	}
 
 	private boolean isPrepared() {
@@ -244,7 +256,9 @@ public class CardProviderModule extends ServiceModule {
 		cardsView.clearCards();
 		cardsView.setSwipeable(false);
 
-		long time = System.currentTimeMillis();
+		long time = Time.getNowLong();
+
+		int cardCount = 0;
 
 		for (final ECard ecard : cards) {
 			if (!ecard.isRelevantTime(time)) {
@@ -267,7 +281,7 @@ public class CardProviderModule extends ServiceModule {
 					card.setBottomBitmap(b);
 				}
 			}
-			// Depreciated
+			// Deprecated TODO:
 			String map_coords = ecard.getMapCoords();
 			if (map_coords != null) {
 				Bitmap b = bitmaps.get(map_coords);
@@ -287,9 +301,13 @@ public class CardProviderModule extends ServiceModule {
 			}
 			card.setSwipeable(ecard.isSwipable());
 			cardsView.addCard(card);
+			cardCount++;
 		}
-		cardsView.refresh();
-		return true;
+		if (cardCount > 0) {
+			cardsView.refresh();
+			return true;
+		}
+		return false;
 	}
 
 	private CachedLoc getLastLocation() {

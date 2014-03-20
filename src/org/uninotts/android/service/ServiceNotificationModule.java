@@ -2,7 +2,6 @@ package org.uninotts.android.service;
 
 import org.studentnow.ECard;
 import org.studentnow.util.UpdateHold;
-import org.uninotts.android.CardNotification;
 import org.uninotts.android.MainActivity;
 import org.uninotts.android.R;
 
@@ -17,7 +16,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 public class ServiceNotificationModule extends ServiceModule {
 
@@ -81,7 +79,7 @@ public class ServiceNotificationModule extends ServiceModule {
 		final Bitmap picture = BitmapFactory.decodeResource(res,
 				R.drawable.ic_stat_uninotts_white);
 
-		final String title = res.getString(R.string.uni_nottingham);
+		// final String title = res.getString(R.string.uni_nottingham);
 
 		final NotificationCompat.Builder builder = new NotificationCompat.Builder(
 				context)
