@@ -51,7 +51,7 @@ public class CardProviderModule extends ServiceModule {
 	private List<ECard> cards = new ArrayList<ECard>();
 	private final HashMap<String, Bitmap> bitmaps = new HashMap<String, Bitmap>();
 
-	private UpdateHold maintainanceThrottle = new UpdateHold(60 * 1000);
+	private UpdateHold maintenanceThrottle = new UpdateHold(60 * 1000);
 
 	public CardProviderModule(LiveService pLiveService) {
 		mLiveService = pLiveService;
@@ -72,8 +72,8 @@ public class CardProviderModule extends ServiceModule {
 
 	@Override
 	public void cycle() {
-		if (maintainanceThrottle.isDue()) {
-			maintainanceThrottle.update();
+		if (maintenanceThrottle.isDue()) {
+			maintenanceThrottle.update();
 			maintainCards();
 		}
 		processRequests();
