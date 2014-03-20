@@ -53,8 +53,8 @@ public class ServiceNotificationModule extends ServiceModule {
 	private UpdateHold updateHold = new UpdateHold();
 
 	private int notificationNumber = 0;
-	
-	private String notificationTitle = "University of Nottingham";	
+
+	private String notificationTitle = "University of Nottingham";
 	private String notificationText = "Starting up...";
 
 	@Override
@@ -63,6 +63,8 @@ public class ServiceNotificationModule extends ServiceModule {
 			updateHold.update();
 
 			for (ECard c : mCardModule.getCards()) {
+				if (!c.isRelevantNow())
+					continue;
 				notificationTitle = c.getTitle();
 				notificationText = c.getDesc();
 				break;
