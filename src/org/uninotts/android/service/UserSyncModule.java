@@ -21,8 +21,8 @@ import org.uninotts.android.__;
 import org.uninotts.android.service.LocationCache.CachedLoc;
 import org.uninotts.android.util.ConnectionDetector;
 import org.uninotts.android.util.OFiles;
-import org.uninotts.timetabling.UniNottsCardsProvider;
-import org.uninotts.timetabling.UniNottsInformationProvider;
+import org.uninotts.timetable.UniNottsCardsProvider;
+import org.uninotts.timetable.UniNottsInformationProvider;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
