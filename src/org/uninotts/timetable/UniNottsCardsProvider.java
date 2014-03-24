@@ -108,11 +108,13 @@ public class UniNottsCardsProvider implements CardsProvider {
 				}
 				cards.add(wkCard);
 			}
-			
-//			ECard dummyTravelCard = new ECard("10 min walk to Jubilee Campus", "If you leave now you will arrive at Jubilee Campus in 10 minutes. Tap for route information.");
-//			dummyTravelCard.setMapCoords("52.951928,-1.185236");
-//			cards.add(dummyTravelCard);
-			
+
+			// ECard dummyTravelCard = new
+			// ECard("10 min walk to Jubilee Campus",
+			// "If you leave now you will arrive at Jubilee Campus in 10 minutes. Tap for route information.");
+			// dummyTravelCard.setMapCoords("52.951928,-1.185236");
+			// cards.add(dummyTravelCard);
+
 			for (Session s : timetable.getSessions()) {
 				if (s.hasPassed()) {
 					continue;
@@ -122,6 +124,7 @@ public class UniNottsCardsProvider implements CardsProvider {
 						uninotts_institution.getDomain());
 				cards.add(sCard);
 			}
+
 			return cards;
 
 		case PROGRAMME_ENDED:

@@ -235,9 +235,10 @@ public class UserSyncModule extends ServiceModule {
 						
 						e.printStackTrace();
 
+						// TODO
 						// This is likely either to be a problem with the API so
 						// ideally we should want to capture some sort of error
-						// report at this time
+						// report at this time and submit as soon as possible
 
 					}
 				} catch (Exception sne) {

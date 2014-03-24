@@ -1,6 +1,7 @@
 package org.uninotts.android.service;
 
 import org.studentnow.ECard;
+import org.studentnow.ProgressAdapter;
 import org.studentnow.util.UpdateHold;
 import org.uninotts.android.MainActivity;
 import org.uninotts.android.R;
@@ -24,7 +25,7 @@ public class ServiceNotificationModule extends ServiceModule {
 
 	public static final int NOTIFICATION_ID = 1;
 
-	private static final int updateInterval = 20 * 60 * 1000;
+	private static final int updateInterval = 60 * 1000;
 
 	private LiveService mLiveService = null;
 
@@ -50,27 +51,52 @@ public class ServiceNotificationModule extends ServiceModule {
 
 	}
 
+	private boolean updateNotification = false;
+
 	private UpdateHold updateHold = new UpdateHold();
 
 	private int notificationNumber = 0;
 
-	private String notificationTitle = "University of Nottingham";
-	private String notificationText = "Starting up...";
+	private ECard currentCard = null;
 
 	@Override
 	public void cycle() {
-		if (updateHold.isDue(updateInterval)) {
+		if (updateHold.isDue(updateInterval) || currentCard == null) {
 			updateHold.update();
 
+			ECard newCard = null;
+			// Look for a relevant ECard with a suitable ProgressAdapter which
+			// prepares and isn't finished
 			for (ECard c : mCardModule.getCards()) {
 				if (!c.isRelevantNow())
 					continue;
-				notificationTitle = c.getTitle();
-				notificationText = c.getDesc();
-				break;
+				ProgressAdapter pa = c.getProgressAdapter();
+				if (pa != null && pa.prepare() && !pa.isFinished()) {
+					newCard = c;
+					updateNotification = true; // for progress notifications
+					break;
+				}
 			}
-			notificationNumber = mCardModule.getCards().size();
+			if (newCard == null) {
+				// Look for a relevant ECard
+				for (ECard c : mCardModule.getCards()) {
+					if (!c.isRelevantNow())
+						continue;
+					newCard = c;
+					break;
+				}
+			}
+			if (newCard != null) {
+				if (!newCard.equals(currentCard)) {
+					updateNotification = true;
+				}
+				currentCard = newCard;
+			}
 
+			notificationNumber = mCardModule.getCards().size();
+		}
+		if (updateNotification) {
+			updateNotification = false;
 			mNotificationManager.notify(NOTIFICATION_ID, create(mLiveService));
 		}
 	}
@@ -87,8 +113,11 @@ public class ServiceNotificationModule extends ServiceModule {
 				context)
 				.setDefaults(Notification.DEFAULT_ALL)
 				.setSmallIcon(R.drawable.ic_stat_uninotts_white)
-				.setContentTitle(notificationTitle)
-				.setContentText(notificationText)
+				.setContentTitle(
+						currentCard != null ? currentCard.getTitle() : res
+								.getString(R.string.uni_nottingham))
+				.setContentText(
+						currentCard != null ? currentCard.getDesc() : "")
 				.setPriority(NotificationCompat.PRIORITY_MIN)
 				.setLargeIcon(picture)
 				.setTicker(null)
@@ -99,22 +128,34 @@ public class ServiceNotificationModule extends ServiceModule {
 								context, MainActivity.class),
 								PendingIntent.FLAG_UPDATE_CURRENT))
 
-				.addAction(
-						R.drawable.ic_action_stat_share,
-						res.getString(R.string.action_share),
-						PendingIntent.getActivity(context, 0, Intent
-								.createChooser(
-										new Intent(Intent.ACTION_SEND).setType(
-												"text/plain")
-												.putExtra(Intent.EXTRA_TEXT,
-														"Dummy text"),
-										"Dummy title"),
-								PendingIntent.FLAG_UPDATE_CURRENT))
-
-				.addAction(R.drawable.ic_action_stat_reply,
-						res.getString(R.string.action_reply), null)
+				// .addAction(
+				// R.drawable.ic_action_stat_share,
+				// res.getString(R.string.action_share),
+				// PendingIntent.getActivity(context, 0, Intent
+				// .createChooser(
+				// new Intent(Intent.ACTION_SEND).setType(
+				// "text/plain")
+				// .putExtra(Intent.EXTRA_TEXT,
+				// "Dummy text"),
+				// "Dummy title"),
+				// PendingIntent.FLAG_UPDATE_CURRENT))
+				//
+				// .addAction(R.drawable.ic_action_stat_reply,
+				// res.getString(R.string.action_reply), null)
 
 				.setAutoCancel(false);
+
+		if (currentCard != null) {
+			ProgressAdapter pa = currentCard.getProgressAdapter();
+			if (pa != null && pa.prepare()) {
+				builder.setProgress(pa.getMax(), pa.getCurrent(), false);
+
+				// TODO: there should be an option to set whether the priority
+				// of the notification changes on lectures
+				// builder.setPriority(NotificationCompat.PRIORITY_LOW);
+				// also fix vibrate???
+			}
+		}
 
 		return builder.build();
 	}
