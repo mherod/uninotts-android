@@ -3,12 +3,10 @@ package org.uninotts.timetable;
 import org.studentnow.MissingFieldException;
 import org.studentnow.Session;
 
-;
-
 public class UniNottsSession extends Session {
 
 	private static final long serialVersionUID = -693903830879750196L;
-	
+
 	private static final String guid = "guid";
 
 	@Override
@@ -25,7 +23,7 @@ public class UniNottsSession extends Session {
 	public String getModuleName() throws MissingFieldException {
 		return get(DESC);
 	}
-	
+
 	public String getGuid() throws MissingFieldException {
 		return get(guid);
 	}

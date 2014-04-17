@@ -13,8 +13,8 @@ public class GuidIndexAgent {
 
 	private HashMap<String, UniNottsSession> indexedSessions = new HashMap<String, UniNottsSession>();
 
-	// this class will be for indexing elements by GUID and using that
-	// information to cluster data
+	// this class is for indexing elements by GUID and using that
+	// information to cluster and merge data
 
 	/**
 	 * Sessions added to this instance of GuidIndexAgent will be merged
