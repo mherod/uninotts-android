@@ -1,9 +1,11 @@
 package org.uninotts.android.data;
 
-import org.studentnow.Course;
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable {
+
+	private static final long serialVersionUID = -149595312803821685L;
 	
-	private Course selectedCourse = null;
+	private String selectedCourse = null;
 
 }

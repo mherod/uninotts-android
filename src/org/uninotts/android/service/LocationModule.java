@@ -2,9 +2,8 @@ package org.uninotts.android.service;
 
 import java.util.Calendar;
 
-import org.studentnow.Static.Fields;
+import org.studentnow.ILocationProvider;
 import org.uninotts.android.__;
-import org.uninotts.android.service.LocationCache.CachedLoc;
 import org.uninotts.android.util.LocationHandler;
 
 import android.app.AlarmManager;
@@ -27,7 +26,7 @@ import com.google.android.gms.location.LocationRequest;
 
 public class LocationModule extends ServiceModule implements
 		GooglePlayServicesClient.ConnectionCallbacks,
-		GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
+		GooglePlayServicesClient.OnConnectionFailedListener, LocationListener, ILocationProvider {
 
 	public final static String TAG = LocationModule.class.getSimpleName();
 
@@ -39,7 +38,7 @@ public class LocationModule extends ServiceModule implements
 	private Handler mainHandler = null;
 
 	private LiveService mLiveService;
-	private UserSyncModule mUserSyncModule = null;
+	private UserTimetableModule mUserSyncModule = null;
 	private LocationCache mLocationCache;
 	private MyLocationHandler mLocationHandler;
 	private AlarmManager mAlarmManager;
@@ -54,7 +53,6 @@ public class LocationModule extends ServiceModule implements
 	private boolean isLocationUpdating = false;
 
 	private boolean requestLocationUpdate = false;
-	private boolean requestLocationSubmission = false;
 
 	private long locUpdatedStartMs = 0;
 
@@ -71,8 +69,8 @@ public class LocationModule extends ServiceModule implements
 	public void link() {
 		mAlarmManager = (AlarmManager) mLiveService
 				.getSystemService(Context.ALARM_SERVICE);
-		mUserSyncModule = (UserSyncModule) mLiveService
-				.getServiceModule(UserSyncModule.class);
+		mUserSyncModule = (UserTimetableModule) mLiveService
+				.getServiceModule(UserTimetableModule.class);
 
 		playResultCode = GooglePlayServicesUtil
 				.isGooglePlayServicesAvailable(mLiveService);
@@ -137,18 +135,7 @@ public class LocationModule extends ServiceModule implements
 						.currentTimeMillis()) {
 
 			requestLocationUpdate = false;
-			requestLocationSubmission = true;
 
-		}
-		if (requestLocationSubmission) {
-			requestLocationSubmission = false;
-
-			CachedLoc loc = getLastLocation();
-			if (loc != null) {
-				mUserSyncModule.put(Fields.LOCATION, loc.getString());
-				mUserSyncModule.put("playservices",
-						String.valueOf(isPlayServicesAvailable()));
-			}
 		}
 	}
 
@@ -183,15 +170,6 @@ public class LocationModule extends ServiceModule implements
 		return mLocationHandler;
 	}
 
-	private CachedLoc getLastLocation() {
-		try {
-			LocationCache mLocationCache = getLocationCache();
-			return mLocationCache.getLastLocation();
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
 	public LocationCache getLocationCache() {
 		return mLocationCache;
 	}
@@ -212,7 +190,6 @@ public class LocationModule extends ServiceModule implements
 	@Override
 	public void onLocationChanged(Location loc) {
 		mLocationCache.storeLocation(loc);
-		requestLocationSubmission = true;
 	}
 
 	@Override
@@ -230,6 +207,11 @@ public class LocationModule extends ServiceModule implements
 	public void onDisconnected() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public org.studentnow.Location getLocation() {
+		return mLocationCache.getLastLocation();
 	}
 
 }

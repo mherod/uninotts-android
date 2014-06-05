@@ -6,9 +6,9 @@ import org.uninotts.android.util.OFiles;
 
 import android.util.Log;
 
-public class AccountModule extends ServiceModule {
+public class UserAccountModule extends ServiceModule {
 
-	final String TAG = AccountModule.class.getSimpleName();
+	final String TAG = UserAccountModule.class.getSimpleName();
 
 	final String authKeyFile = "authkey.dat";
 
@@ -17,16 +17,16 @@ public class AccountModule extends ServiceModule {
 	private boolean requestAccountInvalidate = false;
 
 	private LiveService mLiveService = null;
-	private UserSyncModule mUserSyncModule = null;
+	private UserTimetableModule mUserSyncModule = null;
 
-	public AccountModule(LiveService liveService) {
+	public UserAccountModule(LiveService liveService) {
 		this.mLiveService = liveService;
 	}
 
 	@Override
 	public void link() {
-		mUserSyncModule = ((UserSyncModule) mLiveService
-				.getServiceModule(UserSyncModule.class));
+		mUserSyncModule = ((UserTimetableModule) mLiveService
+				.getServiceModule(UserTimetableModule.class));
 	}
 
 	@Override

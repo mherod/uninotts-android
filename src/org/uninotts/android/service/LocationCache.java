@@ -48,51 +48,7 @@ public class LocationCache extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
-	/*
-	 * 
-	 * // Getting single contact Contact getContact(int id) { SQLiteDatabase db
-	 * = this.getReadableDatabase();
-	 * 
-	 * Cursor cursor = db.query(TABLE_CONTACTS, new String[] { KEY_ID, KEY_NAME,
-	 * KEY_PH_NO }, KEY_ID + "=?", new String[] { String.valueOf(id) }, null,
-	 * null, null, null); if (cursor != null) cursor.moveToFirst();
-	 * 
-	 * Contact contact = new Contact(Integer.parseInt(cursor.getString(0)),
-	 * cursor.getString(1), cursor.getString(2)); // return contact return
-	 * contact; }
-	 * 
-	 * // Getting All Contacts public List<Contact> getAllContacts() {
-	 * List<Contact> contactList = new ArrayList<Contact>(); // Select All Query
-	 * String selectQuery = "SELECT  * FROM " + TABLE_CONTACTS;
-	 * 
-	 * SQLiteDatabase db = this.getWritableDatabase(); Cursor cursor =
-	 * db.rawQuery(selectQuery, null);
-	 * 
-	 * // looping through all rows and adding to list if (cursor.moveToFirst())
-	 * { do { Contact contact = new Contact();
-	 * contact.setID(Integer.parseInt(cursor.getString(0)));
-	 * contact.setName(cursor.getString(1));
-	 * contact.setPhoneNumber(cursor.getString(2)); // Adding contact to list
-	 * contactList.add(contact); } while (cursor.moveToNext()); }
-	 * 
-	 * // return contact list return contactList; }
-	 * 
-	 * // Updating single contact public int updateContact(Contact contact) {
-	 * SQLiteDatabase db = this.getWritableDatabase();
-	 * 
-	 * ContentValues values = new ContentValues(); values.put(KEY_NAME,
-	 * contact.getName()); values.put(KEY_PH_NO, contact.getPhoneNumber());
-	 * 
-	 * // updating row return db.update(TABLE_CONTACTS, values, KEY_ID + " = ?",
-	 * new String[] { String.valueOf(contact.getID()) }); }
-	 * 
-	 * // Deleting single contact public void deleteContact(Contact contact) {
-	 * SQLiteDatabase db = this.getWritableDatabase(); db.delete(TABLE_CONTACTS,
-	 * KEY_ID + " = ?", new String[] { String.valueOf(contact.getID()) });
-	 * db.close(); }
-	 */
-
-	public int getCoursesCount() {
+	public int getLocationFixCount() {
 
 		String countQuery = "SELECT  * FROM " + TABLE_FIXES;
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -109,7 +65,7 @@ public class LocationCache extends SQLiteOpenHelper {
 
 	}
 
-	public CachedLoc getLastLocation() {
+	public CachedLocation getLastLocation() {
 
 		String selectQuery = "SELECT  * "
 
@@ -125,7 +81,7 @@ public class LocationCache extends SQLiteOpenHelper {
 		if (cursor.moveToFirst()) {
 			double lat = cursor.getDouble(2);
 			double lng = cursor.getDouble(3);
-			CachedLoc loc = new CachedLoc(lat, lng);
+			CachedLocation loc = new CachedLocation(lat, lng);
 			loc.setTime(cursor.getLong(0));
 			loc.setProvider(cursor.getString(1));
 			return loc;
@@ -148,14 +104,14 @@ public class LocationCache extends SQLiteOpenHelper {
 
 	}
 
-	public class CachedLoc implements Location {
+	public class CachedLocation implements Location {
 
 		private String provider = "";
 		private long time = 0;
 
 		double lat, lng;
 
-		public CachedLoc(double lat, double lng) {
+		public CachedLocation(double lat, double lng) {
 			this.lat = lat;
 			this.lng = lng;
 		}

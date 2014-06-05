@@ -1,7 +1,7 @@
 package org.uninotts.android;
 
 import org.studentnow.ECard;
-import org.studentnow.ProgressAdapter;
+import org.studentnow.IProgressAdapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -73,7 +73,7 @@ public class VECard extends Card {
 			}
 		}
 		if (ecard != null) {
-			ProgressAdapter progressAdapter = ecard.getProgressAdapter();
+			IProgressAdapter progressAdapter = ecard.getProgressAdapter();
 			if (progressAdapter != null && progressAdapter.prepare()) {
 				View v = view.findViewById(R.id.card_part_progress);
 				if (v != null) {

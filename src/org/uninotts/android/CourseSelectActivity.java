@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.studentnow.Course;
 import org.studentnow.Static.Fields;
-import org.uninotts.android.service.AccountModule;
+import org.uninotts.android.service.UserAccountModule;
 import org.uninotts.android.service.LiveService;
-import org.uninotts.android.service.UserSyncModule;
+import org.uninotts.android.service.UserTimetableModule;
 
 import android.app.Activity;
 import android.content.Context;
@@ -132,10 +132,8 @@ public class CourseSelectActivity extends Activity implements
 				Toast.LENGTH_SHORT).show();
 
 		LiveService mLiveService = serviceLink.getLiveService();
-		UserSyncModule syncModule = (UserSyncModule) mLiveService
-				.getServiceModule(UserSyncModule.class);
-
-		syncModule.put(Fields.PROGRAMME_ID, ""); // TODO
+		
+		
 
 		finish();
 	}
@@ -155,9 +153,9 @@ public class CourseSelectActivity extends Activity implements
 				mResults.clear();
 
 				LiveService mLiveService = serviceLink.getLiveService();
-				AccountModule mAccountModule = null;
-				mAccountModule = (AccountModule) mLiveService
-						.getServiceModule(AccountModule.class);
+				UserAccountModule mAccountModule = null;
+				mAccountModule = (UserAccountModule) mLiveService
+						.getServiceModule(UserAccountModule.class);
 				// AuthResponse authResponse = mAccountModule.getAuthResponse();
 
 				List<Course> responseCourses = null;

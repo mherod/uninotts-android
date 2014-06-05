@@ -2,25 +2,22 @@ package org.uninotts.android.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
-import org.studentnow.CardsProvider;
 import org.studentnow.Course;
 import org.studentnow.ECard;
-import org.studentnow.InformationProvider;
+import org.studentnow.ICardsProvider;
 import org.studentnow.Module;
-import org.studentnow.Session;
 import org.studentnow.Timetable;
-import org.studentnow.util.SuppressionPeriod;
-import org.studentnow.util.UpdateHold;
+import org.studentnow.util.DayHelper;
+import org.studentnow.util.ExponentialBackoff;
+import org.studentnow.util.Time;
+import org.studentnow.util.UpdateThrottle;
 import org.uninotts.android.MainActivity;
 import org.uninotts.android.__;
-import org.uninotts.android.service.LocationCache.CachedLoc;
 import org.uninotts.android.util.ConnectionDetector;
 import org.uninotts.android.util.OFiles;
+import org.uninotts.timetable.ExampleCardsProvider;
 import org.uninotts.timetable.UniNottsCardsProvider;
 import org.uninotts.timetable.UniNottsInformationProvider;
 
@@ -32,37 +29,37 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
-public class UserSyncModule extends ServiceModule {
+public class UserTimetableModule extends ServiceModule {
 
-	public final static String TAG = UserSyncModule.class.getSimpleName();
+	public final static String TAG = UserTimetableModule.class.getSimpleName();
 
-	private final static String FILE_PERS = "SyncModule.dat";
+	private final static String FILE_PERS = "cardupdatethrottle.dat";
 	private final static String FILE_CARDS = "cards.dat";
-	private final static String FILE_PVLS = "postfields.dat";
 
 	private final static int SYNC_INTERVAL = 1000 * 60 * 60;
 
 	private LiveService mLiveService;
-	private CardProviderModule mCardModule;
-	private AccountModule mAccountModule;
+	private CardViewWorkerModule mCVWModule;
+	private UserAccountModule mUserAccountModule;
 	private LocationModule mLocationModule;
+	private BugSubmissionModule mBugSubmissionModule;
+
+	private UniNottsInformationProvider mInformationProvider;
+	private ICardsProvider mCardsProvider;
 
 	private AlarmManager mAlarmManager;
 
 	private PendingIntent partDailyIntent, fullDailyIntent;
 
-	private UpdateHold mSyncUpdateHold;
+	private UpdateThrottle mCardUpdateThrottle;
 
 	private boolean requestUpdate = false;
 	private boolean requestCardRefresh = false;
 	private boolean requestSave = false;
 
-	protected SuppressionPeriod cardSuppressionPeriod = new SuppressionPeriod();
-	protected SuppressionPeriod postSuppressionPeriod = new SuppressionPeriod();
+	protected ExponentialBackoff mCardUpdateErrorBackoff = new ExponentialBackoff();
 
-	private HashMap<String, String> postValues = new HashMap<String, String>();
-
-	public UserSyncModule(LiveService liveService) {
+	public UserTimetableModule(LiveService liveService) {
 		this.mLiveService = liveService;
 		this.partDailyIntent = PendingIntent.getBroadcast(liveService, 0,
 				new Intent(__.INTENT_UPDATE_CARDS), 0);
@@ -74,12 +71,18 @@ public class UserSyncModule extends ServiceModule {
 	public void link() {
 		mAlarmManager = (AlarmManager) mLiveService
 				.getSystemService(Context.ALARM_SERVICE);
-		mCardModule = ((CardProviderModule) mLiveService
-				.getServiceModule(CardProviderModule.class));
-		mAccountModule = (AccountModule) mLiveService
-				.getServiceModule(AccountModule.class);
+		mCVWModule = ((CardViewWorkerModule) mLiveService
+				.getServiceModule(CardViewWorkerModule.class));
+		mUserAccountModule = (UserAccountModule) mLiveService
+				.getServiceModule(UserAccountModule.class);
 		mLocationModule = (LocationModule) mLiveService
 				.getServiceModule(LocationModule.class);
+		mBugSubmissionModule = (BugSubmissionModule) mLiveService
+				.getServiceModule(BugSubmissionModule.class);
+
+		mInformationProvider = new UniNottsInformationProvider();
+		mCardsProvider = new ExampleCardsProvider();
+		mCardsProvider.setLocationProvider(mLocationModule);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -87,22 +90,9 @@ public class UserSyncModule extends ServiceModule {
 	public void load() {
 		String f = OFiles.getFolder(mLiveService);
 		try {
-			mSyncUpdateHold = (UpdateHold) OFiles.read(f + FILE_PERS);
-			Log.i(TAG, "Recovered mSyncUpdateHold");
+			mCardUpdateThrottle = (UpdateThrottle) OFiles.read(f + FILE_PERS);
 		} catch (Exception e) {
-			mSyncUpdateHold = new UpdateHold();
-		}
-
-		HashMap<String, String> loadPostVals = null;
-		try {
-			loadPostVals = (HashMap<String, String>) OFiles.read(f + FILE_PVLS);
-			Log.i(TAG, "Recovered " + loadPostVals.size()
-					+ " pending postValues");
-		} catch (Exception e) {
-			Log.e(TAG, e.toString() + " loading field syncs");
-		}
-		if (loadPostVals != null) {
-			postValues.putAll(loadPostVals);
+			mCardUpdateThrottle = new UpdateThrottle();
 		}
 
 		List<ECard> loadCards = null;
@@ -114,8 +104,8 @@ public class UserSyncModule extends ServiceModule {
 			Log.e(TAG, e.toString() + " loading cards");
 		}
 		if (loadCards != null) {
-			mCardModule.getCards().clear();
-			mCardModule.getCards().addAll(loadCards);
+			mCVWModule.getCards().clear();
+			mCVWModule.getCards().addAll(loadCards);
 		}
 	}
 
@@ -124,20 +114,11 @@ public class UserSyncModule extends ServiceModule {
 		mLiveService.registerReceiver(updateReciever, new IntentFilter(
 				__.INTENT_UPDATE_CARDS));
 
-		requestUpdate(); // TODO: timeout
+		requestUpdate();
 
-		Random randomGenerator = new Random();
-
-		Calendar c = Calendar.getInstance();
-		c.add(Calendar.DAY_OF_MONTH, 1);
-		c.set(Calendar.HOUR_OF_DAY, 0);
-		c.set(Calendar.MINUTE, randomGenerator.nextInt(5));
-		c.set(Calendar.SECOND, 0);
-		c.set(Calendar.MILLISECOND, 0);
-
-		long midnightRefreshDate = c.getTimeInMillis();
-		long sixHoursRefreshDate = System.currentTimeMillis()
-				+ (AlarmManager.INTERVAL_DAY / 4);
+		long midnightRefreshDate = DayHelper.getDateMidnight() + (30 * 1000);
+		long sixHoursRefreshDate = Time
+				.getNowTimeAdd(AlarmManager.INTERVAL_DAY / 4);
 
 		scheduleRepeatIntentRTC(fullDailyIntent, 2, midnightRefreshDate);
 		scheduleRepeatIntentRTC(partDailyIntent, 6, sixHoursRefreshDate);
@@ -168,13 +149,13 @@ public class UserSyncModule extends ServiceModule {
 
 	@Override
 	public void cycle() {
-		if (!requestUpdate && mCardModule.getCards().size() == 0) {
+		if (!requestUpdate && mCVWModule.getCards().size() == 0) {
 			requestUpdate = true;
-		} else if (mSyncUpdateHold.isDue(SYNC_INTERVAL)) {
+		} else if (mCardUpdateThrottle.isDue(SYNC_INTERVAL)) {
 			requestUpdate = true;
 		}
-		if (requestCardRefresh && mCardModule != null) {
-			mCardModule.requestUpdate();
+		if (requestCardRefresh && mCVWModule != null) {
+			mCVWModule.requestUpdate();
 			requestCardRefresh = false;
 		}
 		if (requestSave && save()) {
@@ -185,13 +166,12 @@ public class UserSyncModule extends ServiceModule {
 
 	@Override
 	public void cycleNetwork() {
-		if (mAccountModule != null && mAccountModule.hasAuthResponse()) {
-			// TODO
-			if (requestUpdate && !cardSuppressionPeriod.isSuppressed()) {
+		if (mUserAccountModule != null && mUserAccountModule.hasAuthResponse()) {
+			if (requestUpdate && !mCardUpdateErrorBackoff.isSuppressed()) {
 
 				// Block - No network connection available to device
 				if (!ConnectionDetector.hasNetwork(mLiveService)) {
-					long r = cardSuppressionPeriod.suppress();
+					long r = mCardUpdateErrorBackoff.suppress();
 					String c = "No network connection - retry in " + r / 1000
 							+ "s";
 					Log.e(TAG, c);
@@ -199,89 +179,60 @@ public class UserSyncModule extends ServiceModule {
 					return;
 				}
 
-				//
-
 				List<ECard> newCards = null;
 
-				InformationProvider informationProvider = new UniNottsInformationProvider();
 				try {
-					Course course = informationProvider.queryCourse("G601");
+					Course course = mInformationProvider.queryCourse("G601");
 
 					if (course == null) {
 						throw new NullPointerException();
 					}
-
 					try {
+						List<Module> modules = course.getCoreModules();
 
-						List<Module> modules = course.getModules();
-						List<Session> sessions = Module.exportSessions(modules);
+						Timetable timetable2 = new Timetable(
+								mInformationProvider);
+						timetable2.addModules(modules);
+						timetable2.sync();
 
-						Timetable timetable = informationProvider.getTimetable(
-								sessions).filterLive();
+						mCardsProvider.setTimetable(timetable2);
 
-						CardsProvider cardsProvider = new UniNottsCardsProvider();
-
-						newCards = cardsProvider.renderCards(timetable);
-
-						for (ECard card : newCards) {
-
-							System.out.println("a: " + card.getTitle()
-									+ "  b: " + card.getDesc());
-
-						}
+						newCards = mCardsProvider.renderCards();
 
 					} catch (Exception e) {
-						Log.e(TAG, "Error processing information");
-						
+						mBugSubmissionModule.recordException(e);
+
+						Log.e(TAG,
+								"Timetable update error processing data provided by API");
 						e.printStackTrace();
-
-						// TODO
-						// This is likely either to be a problem with the API so
-						// ideally we should want to capture some sort of error
-						// report at this time and submit as soon as possible
-
 					}
 				} catch (Exception sne) {
-
+					Log.e(TAG,
+							"Timetable update error retrieving new course data");
+					sne.printStackTrace();
 				}
-
-				// consider new information for directions
 
 				if (newCards != null && newCards.size() > 0) {
 
 					Log.d(TAG, "Updating cards with " + newCards.size());
 
-					mCardModule.getCards().clear();
-					mCardModule.getCards().addAll(newCards);
+					mCVWModule.getCards().clear();
+					mCVWModule.getCards().addAll(newCards);
 
 					requestUpdate = false;
 					requestCardRefresh = requestSave = true;
 
-					cardSuppressionPeriod.reset();
-					mSyncUpdateHold.update();
+					mCardUpdateErrorBackoff.reset();
+					mCardUpdateThrottle.update();
 
 				} else {
-					long r = cardSuppressionPeriod.suppress();
+					long r = mCardUpdateErrorBackoff.suppress();
 					String c = "Refresh error - retry in " + r / 1000 + "s";
 					Log.e(TAG, c);
 					MainActivity.showAlert(mLiveService, c);
 				}
 			}
 		}
-	}
-
-	private CachedLoc getLastLocation() {
-		try {
-			LocationCache mLocationCache = mLocationModule.getLocationCache();
-			return mLocationCache.getLastLocation();
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public void put(String field, String value) {
-		postValues.put(field, value);
-		requestSave = true;
 	}
 
 	private BroadcastReceiver updateReciever = new BroadcastReceiver() {
@@ -293,8 +244,7 @@ public class UserSyncModule extends ServiceModule {
 	};
 
 	public void clearLocalData() {
-		mCardModule.getCards().clear();
-		postValues.clear();
+		mCVWModule.getCards().clear();
 		requestSave = true;
 		Log.i(TAG, "Cleared local sync data");
 	}
@@ -306,15 +256,10 @@ public class UserSyncModule extends ServiceModule {
 	@Override
 	public boolean save() {
 		String f = OFiles.getFolder(mLiveService);
-
-		boolean pers = save(f + FILE_PERS, mSyncUpdateHold,
-				mSyncUpdateHold != null);
-		boolean post = save(f + FILE_PVLS, postValues, postValues.size() > 0);
-
-		List<ECard> cards = mCardModule.getCards();
-		boolean card = save(f + FILE_CARDS, cards, cards.size() > 0);
-
-		return pers && post && card;
+		List<ECard> cards = mCVWModule.getCards();
+		return save(f + FILE_PERS, mCardUpdateThrottle,
+				mCardUpdateThrottle != null)
+				&& save(f + FILE_CARDS, cards, cards.size() > 0);
 	}
 
 	private boolean save(String file, Object o, boolean toSave) {

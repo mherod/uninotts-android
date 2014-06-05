@@ -1,6 +1,8 @@
 package org.uninotts.android.service;
 
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,15 +10,16 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.studentnow.ECard;
+import org.studentnow.Location;
 import org.studentnow.Static.Fields;
+import org.studentnow.util.QueryFactory;
 import org.studentnow.util.Time;
-import org.studentnow.util.UpdateHold;
-import org.uninotts.android.CourseSelectActivity;
+import org.studentnow.util.UpdateThrottle;
 import org.uninotts.android.MainActivity;
 import org.uninotts.android.R;
 import org.uninotts.android.VECard;
 import org.uninotts.android.__;
-import org.uninotts.android.service.LocationCache.CachedLoc;
+import org.uninotts.android.service.LocationCache.CachedLocation;
 import org.uninotts.android.util.ConnectionDetector;
 
 import android.content.Context;
@@ -31,9 +34,9 @@ import android.view.View.OnClickListener;
 import com.fima.cardsui.objects.Card;
 import com.fima.cardsui.views.CardUI;
 
-public class CardProviderModule extends ServiceModule {
+public class CardViewWorkerModule extends ServiceModule {
 
-	private final String TAG = CardProviderModule.class.getSimpleName();
+	private final String TAG = CardViewWorkerModule.class.getSimpleName();
 
 	private static final String IMG_TEXT_SRC = Fields.IMAGE_TEXT_SRC;
 	private static final String IMG_MAIN_SRC = Fields.IMAGE_MAIN_SRC;
@@ -43,7 +46,7 @@ public class CardProviderModule extends ServiceModule {
 			IMG_TEXT_SRC_ };
 
 	private LiveService mLiveService;
-	private UserSyncModule mUserSyncModule;
+	private UserTimetableModule mUserSyncModule;
 	private LocationModule mLocationModule;
 
 	private boolean requestCardViewUpdate = false;
@@ -51,16 +54,16 @@ public class CardProviderModule extends ServiceModule {
 	private List<ECard> cards = new ArrayList<ECard>();
 	private final HashMap<String, Bitmap> bitmaps = new HashMap<String, Bitmap>();
 
-	private UpdateHold maintenanceThrottle = new UpdateHold(60 * 1000);
+	private UpdateThrottle maintenanceThrottle = new UpdateThrottle(60 * 1000);
 
-	public CardProviderModule(LiveService pLiveService) {
+	public CardViewWorkerModule(LiveService pLiveService) {
 		mLiveService = pLiveService;
 	}
 
 	@Override
 	public void link() {
-		mUserSyncModule = (UserSyncModule) mLiveService
-				.getServiceModule(UserSyncModule.class);
+		mUserSyncModule = (UserTimetableModule) mLiveService
+				.getServiceModule(UserTimetableModule.class);
 		mLocationModule = (LocationModule) mLiveService
 				.getServiceModule(LocationModule.class);
 	}
@@ -106,31 +109,32 @@ public class CardProviderModule extends ServiceModule {
 		// if (ecard.isType(ECard.LOGIN)) {
 		// return new Intent(mLiveService, LoginActivity.class);
 		// }
-		if (ecard.isType(ECard.SELECT_COURSE)) {
-			return new Intent(mLiveService, CourseSelectActivity.class);
-		}
+		// if (ecard.isType(ECard.SELECT_COURSE)) {
+		// return new Intent(mLiveService, CourseSelectActivity.class);
+		// }
 		// if (ecard.isType(ECard.TRAVEL)) {
-		// HashMap<String, String> params = new HashMap<String, String>();
-		// Loc loc = getLastLocation();
-		// if (loc != null) {
-		// params.put("saddr", loc.getString());
-		// }
-		// if (ecard.hasMapCoords()) {
-		// params.put("daddr", ecard.getMapCoords());
-		// }
-		// String query = QueryFactory.renderQuery(params);
-		// String url = null;
-		// try {
-		// url = new URI("https", "maps.google.com", "/maps", query, null)
-		// .toString();
-		// } catch (URISyntaxException e) {
-		// return null;
-		// }
-		// Uri gm = Uri.parse(url);
-		// return new Intent(Intent.ACTION_VIEW, gm).setClassName(
-		// "com.google.android.apps.maps",
-		// "com.google.android.maps.MapsActivity");
-		// }
+		// 
+		if (ecard.hasMapCoords()) {
+			HashMap<String, String> params = new HashMap<String, String>();
+			CachedLocation loc = getLastLocation();
+			if (loc != null) {
+				params.put("saddr", loc.getString());
+			}
+			params.put("daddr", ecard.getMapCoords());
+
+			String query = QueryFactory.renderQuery(params);
+			String url = null;
+			try {
+				url = new URI("https", "maps.google.com", "/maps", query, null)
+						.toString();
+			} catch (URISyntaxException e) {
+				return null;
+			}
+			Uri gm = Uri.parse(url);
+			return new Intent(Intent.ACTION_VIEW, gm).setClassName(
+					"com.google.android.apps.maps",
+					"com.google.android.maps.MapsActivity");
+		}
 		return new Intent(mLiveService, MainActivity.class);
 	}
 
@@ -234,7 +238,7 @@ public class CardProviderModule extends ServiceModule {
 
 				Log.e(TAG, "No network - returning help card");
 				return true;
-			} else if (mUserSyncModule.cardSuppressionPeriod.isSuppressed()) {
+			} else if (mUserSyncModule.mCardUpdateErrorBackoff.isSuppressed()) {
 				// We don't currently have any cards, and if we are in a
 				// suppressed state then we can safely assume we are getting
 				// errors
@@ -310,7 +314,7 @@ public class CardProviderModule extends ServiceModule {
 		return false;
 	}
 
-	private CachedLoc getLastLocation() {
+	private CachedLocation getLastLocation() {
 		try {
 			LocationCache mLocationCache = mLocationModule.getLocationCache();
 			return mLocationCache.getLastLocation();

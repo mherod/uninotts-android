@@ -1,8 +1,8 @@
 package org.uninotts.android.service;
 
 import org.studentnow.ECard;
-import org.studentnow.ProgressAdapter;
-import org.studentnow.util.UpdateHold;
+import org.studentnow.IProgressAdapter;
+import org.studentnow.util.UpdateThrottle;
 import org.uninotts.android.MainActivity;
 import org.uninotts.android.R;
 
@@ -30,11 +30,10 @@ public class ServiceNotificationModule extends ServiceModule {
 	private LiveService mLiveService = null;
 
 	private NotificationManager mNotificationManager;
+	private CardViewWorkerModule mCVWModule;
 
-	private CardProviderModule mCardModule;
-
-	public ServiceNotificationModule(LiveService pLiveService) {
-		this.mLiveService = pLiveService;
+	public ServiceNotificationModule(LiveService liveService) {
+		this.mLiveService = liveService;
 	}
 
 	@Override
@@ -42,8 +41,8 @@ public class ServiceNotificationModule extends ServiceModule {
 		mNotificationManager = (NotificationManager) mLiveService
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		mCardModule = ((CardProviderModule) mLiveService
-				.getServiceModule(CardProviderModule.class));
+		mCVWModule = ((CardViewWorkerModule) mLiveService
+				.getServiceModule(CardViewWorkerModule.class));
 	}
 
 	@Override
@@ -53,7 +52,7 @@ public class ServiceNotificationModule extends ServiceModule {
 
 	private boolean updateNotification = false;
 
-	private UpdateHold updateHold = new UpdateHold();
+	private UpdateThrottle mNotificationUpdateThrottle = new UpdateThrottle();
 
 	private int notificationNumber = 0;
 
@@ -61,16 +60,16 @@ public class ServiceNotificationModule extends ServiceModule {
 
 	@Override
 	public void cycle() {
-		if (updateHold.isDue(updateInterval) || currentCard == null) {
-			updateHold.update();
+		if (mNotificationUpdateThrottle.isDue(updateInterval) || currentCard == null) {
+			mNotificationUpdateThrottle.update();
 
 			ECard newCard = null;
 			// Look for a relevant ECard with a suitable ProgressAdapter which
 			// prepares and isn't finished
-			for (ECard c : mCardModule.getCards()) {
+			for (ECard c : mCVWModule.getCards()) {
 				if (!c.isRelevantNow())
 					continue;
-				ProgressAdapter pa = c.getProgressAdapter();
+				IProgressAdapter pa = c.getProgressAdapter();
 				if (pa != null && pa.prepare() && !pa.isFinished()) {
 					newCard = c;
 					updateNotification = true; // for progress notifications
@@ -79,7 +78,7 @@ public class ServiceNotificationModule extends ServiceModule {
 			}
 			if (newCard == null) {
 				// Look for a relevant ECard
-				for (ECard c : mCardModule.getCards()) {
+				for (ECard c : mCVWModule.getCards()) {
 					if (!c.isRelevantNow())
 						continue;
 					newCard = c;
@@ -93,7 +92,7 @@ public class ServiceNotificationModule extends ServiceModule {
 				currentCard = newCard;
 			}
 
-			notificationNumber = mCardModule.getCards().size();
+			notificationNumber = mCVWModule.getCards().size();
 		}
 		if (updateNotification) {
 			updateNotification = false;
@@ -146,7 +145,7 @@ public class ServiceNotificationModule extends ServiceModule {
 				.setAutoCancel(false);
 
 		if (currentCard != null) {
-			ProgressAdapter pa = currentCard.getProgressAdapter();
+			IProgressAdapter pa = currentCard.getProgressAdapter();
 			if (pa != null && pa.prepare()) {
 				builder.setProgress(pa.getMax(), pa.getCurrent(), false);
 

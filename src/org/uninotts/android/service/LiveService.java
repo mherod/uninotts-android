@@ -71,15 +71,20 @@ public class LiveService extends Service implements Runnable {
 		Log.i(TAG, mServiceThread.getName() + " started");
 		sendBroadcast(new Intent(__.INTENT_CONNECT_SERVICE));
 
-		modules.add(new AccountModule(this));
+		// Data
+		modules.add(new UserAccountModule(this));
+		modules.add(new UserTimetableModule(this));
 
-		modules.add(new UserSyncModule(this));
-
-		modules.add(new CardProviderModule(this));
+		// View
+		modules.add(new CardViewWorkerModule(this));
+		
 		modules.add(new NotificationModule(this));
+		
 		modules.add(new LocationModule(this));
+		
 		modules.add(new SignatureCheckModule(this));
-
+		modules.add(new BugSubmissionModule(this));
+		
 		modules.add(serviceNotificationModule);
 
 		for (ServiceModule m : modules) {

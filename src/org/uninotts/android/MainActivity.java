@@ -3,9 +3,9 @@ package org.uninotts.android;
 import java.util.HashMap;
 import java.util.Locale;
 
-import org.uninotts.android.service.CardProviderModule;
+import org.uninotts.android.service.CardViewWorkerModule;
 import org.uninotts.android.service.LiveService;
-import org.uninotts.android.service.UserSyncModule;
+import org.uninotts.android.service.UserTimetableModule;
 import org.uninotts.android.util.DepthPageTransformer;
 
 import android.app.ActionBar;
@@ -232,8 +232,8 @@ public class MainActivity extends Activity implements Runnable {
 		case R.id.action_refresh:
 			Crouton.makeText(this, "Refreshing...", Style.INFO).show();
 
-			UserSyncModule usm = ((UserSyncModule) mLiveService
-					.getServiceModule(UserSyncModule.class));
+			UserTimetableModule usm = ((UserTimetableModule) mLiveService
+					.getServiceModule(UserTimetableModule.class));
 			usm.requestUpdate();
 			return true;
 
@@ -265,8 +265,8 @@ public class MainActivity extends Activity implements Runnable {
 			return false;
 		}
 
-		CardProviderModule cardProviderModule = (CardProviderModule) l
-				.getServiceModule(CardProviderModule.class);
+		CardViewWorkerModule cardProviderModule = (CardViewWorkerModule) l
+				.getServiceModule(CardViewWorkerModule.class);
 
 		CardUI cardsView = cardsFragment.getCardsView();
 

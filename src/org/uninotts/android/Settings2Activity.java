@@ -1,10 +1,5 @@
 package org.uninotts.android;
 
-import java.util.List;
-
-import org.uninotts.android.service.UserAccountModule;
-import org.uninotts.android.service.LiveService;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -15,14 +10,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
-import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
-import android.view.MenuItem;
+
+import java.util.List;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -35,91 +30,57 @@ import android.view.MenuItem;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class SettingsActivity extends PreferenceActivity {
+public class Settings2Activity extends PreferenceActivity {
 	/**
 	 * Determines whether to always show the simplified settings UI, where
 	 * settings are presented in a single list. When false, settings are shown
 	 * as a master/detail two-pane view on tablets. When true, a single pane is
 	 * shown on tablets.
 	 */
-
-	private LiveServiceLink serviceLink = null;
-
 	private static final boolean ALWAYS_SIMPLE_PREFS = false;
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setupActionBar();
-		serviceLink = new LiveServiceLink(this);
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		serviceLink.start();
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		serviceLink.stop();
-	}
-
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private void setupActionBar() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			getActionBar().setDisplayHomeAsUpEnabled(true);
-		}
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
+
 		setupSimplePreferencesScreen();
 	}
 
+	/**
+	 * Shows the simplified settings UI if the device configuration if the
+	 * device configuration dictates that a simplified, single-pane UI should be
+	 * shown.
+	 */
 	private void setupSimplePreferencesScreen() {
 		if (!isSimplePreferences(this)) {
 			return;
 		}
 
-		// PreferenceCategory fakeHeader = new PreferenceCategory(this);
-		// fakeHeader.setTitle(R.string.pref_header_account);
-		// getPreferenceScreen().addPreference(fakeHeader);
-		addPreferencesFromResource(R.xml.pref_account);
+		// In the simplified UI, fragments are not used at all and we instead
+		// use the older PreferenceActivity APIs.
 
-		Preference myPref = (Preference) findPreference("account_logout");
-		myPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			public boolean onPreferenceClick(Preference preference) {
-				LiveService mLiveService = serviceLink.getLiveService();
-				if (mLiveService != null) {
-					UserAccountModule am = (UserAccountModule) mLiveService
-							.getServiceModule(UserAccountModule.class);
-					am.setAuthResponse(null);
-					SettingsActivity.this.finish();
-				}
-				return true;
-			}
-		});
+		// Add 'general' preferences.
+		addPreferencesFromResource(R.xml.pref_general);
+
+		// Add 'notifications' preferences, and a corresponding header.
+		PreferenceCategory fakeHeader = new PreferenceCategory(this);
+		fakeHeader.setTitle(R.string.pref_header_notifications);
+		getPreferenceScreen().addPreference(fakeHeader);
+		addPreferencesFromResource(R.xml.pref_notification);
+
+		// Add 'data and sync' preferences, and a corresponding header.
+		fakeHeader = new PreferenceCategory(this);
+		fakeHeader.setTitle(R.string.pref_header_data_sync);
+		getPreferenceScreen().addPreference(fakeHeader);
+		addPreferencesFromResource(R.xml.pref_data_sync);
 
 		// Bind the summaries of EditText/List/Dialog/Ringtone preferences to
 		// their values. When their values change, their summaries are updated
 		// to reflect the new value, per the Android Design guidelines.
-		// bindPreferenceSummaryToValue(findPreference("example_text"));
-		// bindPreferenceSummaryToValue(findPreference("example_list"));
-		// bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
-		// bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+		bindPreferenceSummaryToValue(findPreference("example_text"));
+		bindPreferenceSummaryToValue(findPreference("example_list"));
+		bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
+		bindPreferenceSummaryToValue(findPreference("sync_frequency"));
 	}
 
 	/** {@inheritDoc} */

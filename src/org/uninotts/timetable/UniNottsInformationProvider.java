@@ -16,11 +16,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.studentnow.Course;
 import org.studentnow.CourseListing;
 import org.studentnow.InformationProvider;
-import org.studentnow.InformationProviderException;
 import org.studentnow.Module;
 import org.studentnow.ModuleListing;
-import org.studentnow.Session;
-import org.studentnow.Timetable;
 import org.studentnow.util.DocumentInput;
 import org.studentnow.util.Time;
 import org.w3c.dom.Document;
@@ -286,12 +283,6 @@ public class UniNottsInformationProvider implements InformationProvider {
 			return new Time(hours, minutes);
 		}
 		return null;
-	}
-
-	@Override
-	public Timetable getTimetable(List<Session> sessions)
-			throws InformationProviderException {
-		return new Timetable(this).updateSessions(sessions);
 	}
 
 }

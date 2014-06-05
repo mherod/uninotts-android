@@ -25,7 +25,7 @@ public class NotificationModule extends ServiceModule {
 	private NotificationPersistance persistence = null;
 
 	private LiveService mLiveService = null;
-	private CardProviderModule mCardProviderModule = null;
+	private CardViewWorkerModule mCardProviderModule = null;
 
 	private AlarmManager mAlarmManager = null;
 	private PendingIntent notificationIntent = null;
@@ -36,8 +36,8 @@ public class NotificationModule extends ServiceModule {
 
 	@Override
 	public void link() {
-		mCardProviderModule = (CardProviderModule) mLiveService
-				.getServiceModule(CardProviderModule.class);
+		mCardProviderModule = (CardViewWorkerModule) mLiveService
+				.getServiceModule(CardViewWorkerModule.class);
 		mAlarmManager = (AlarmManager) mLiveService
 				.getSystemService(Context.ALARM_SERVICE);
 	}

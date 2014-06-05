@@ -1,11 +1,14 @@
 package org.uninotts.timetable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.simple.parser.ParseException;
 import org.studentnow.CardFactory;
-import org.studentnow.CardsProvider;
 import org.studentnow.ECard;
+import org.studentnow.ICardsProvider;
+import org.studentnow.ILocationProvider;
 import org.studentnow.Institution;
 import org.studentnow.Location;
 import org.studentnow.Session;
@@ -13,27 +16,48 @@ import org.studentnow.Static.Fields;
 import org.studentnow.StudentNowException;
 import org.studentnow.Timetable;
 import org.studentnow._;
+import org.studentnow.gd.Directions;
+import org.studentnow.gd.DirectionsQueryURL;
+import org.studentnow.gd.DistanceHelper;
+import org.studentnow.gd.GMapsLocation;
+import org.studentnow.gd.Leg;
+import org.studentnow.gd.QueryFailedException;
+import org.studentnow.gd.Route;
 import org.studentnow.util.DayHelper;
 import org.studentnow.util.Q;
 import org.studentnow.util.StringUtils;
 import org.studentnow.util.Time;
 
-public class UniNottsCardsProvider implements CardsProvider {
+public class UniNottsCardsProvider implements ICardsProvider {
+
+	private Timetable timetable;
+	private ILocationProvider locationProvider;
 
 	public static final Institution uninotts_institution =
 
 	new Institution("The University of Nottingham", "nottingham.ac.uk");
 
 	@Override
-	public List<ECard> renderCards(Timetable timetable)
-			throws StudentNowException {
+	public void setTimetable(Timetable timetable) {
+		this.timetable = timetable;
+	}
+
+	@Override
+	public void setLocationProvider(ILocationProvider locationProvider) {
+		this.locationProvider = locationProvider;
+	}
+
+	@SuppressWarnings("unused")
+	// TODO
+	@Override
+	public List<ECard> renderCards() throws StudentNowException {
 
 		System.out.println("Timetabe status: " + timetable.getState());
 
 		int week = timetable.getWeek();
 
-		long morningDate = Time.parseString("8:00").toLong();
-		long eveningDate = Time.parseString("19:00").toLong();
+		long morningDate = Time.parseString("8:00").toDateToday().getTime();
+		long eveningDate = Time.parseString("19:00").toDateToday().getTime();
 		long midnightDate = DayHelper.getDateMidnight();
 		String day = DayHelper.getTodayName();
 
@@ -42,9 +66,17 @@ public class UniNottsCardsProvider implements CardsProvider {
 
 		long finishDate = lastSession == null ? 0 : lastSession.getDate(true);
 
-		// Location myLocation = null, homeLocation = null, destLocation = null;
-		// boolean atHome = false, atDest = false;
-		// long travelArrival = 0, travelIdealArrival = 0;
+		Location myLocation = null, destLocation = null;
+		boolean atDestination = false;
+		float destDistance;
+		if (locationProvider != null) {
+			myLocation = locationProvider.getLocation();
+		}
+		if (myLocation != null && destLocation != null) { //
+			destDistance = DistanceHelper.distMeters(myLocation, destLocation);
+			atDestination = destDistance < 200;
+
+		}
 
 		List<ECard> cards = new ArrayList<ECard>();
 
@@ -128,14 +160,13 @@ public class UniNottsCardsProvider implements CardsProvider {
 			return cards;
 
 		case PROGRAMME_ENDED:
-			ECard eCard1 = new ECard("Week " + timetable.getWeek(),
-					"Your sessions for this programme cycle are finished!");
-			cards.add(eCard1);
+			cards.add(new ECard("Week " + timetable.getWeek(),
+					"Your sessions for this programme cycle are finished!"));
 			ECard eCard2 = new ECard("Select next programme",
 					"Tap this if you expect your programme to continue at "
 							+ uninotts_institution.getName()
 							+ " to select your new programme.");
-			eCard2.setType(ECard.SELECT_COURSE);
+			// TODO: fix action
 			eCard2.setNotificationTime(morningDate);
 			cards.add(eCard2);
 			return cards;
@@ -190,21 +221,40 @@ public class UniNottsCardsProvider implements CardsProvider {
 				card.setExpiryTime(midnightDate);
 				cards.add(card);
 			}
-
-			// ECard eCard2z = new ECard("Events nearby",
-			// "Soon we'll show you events happening at " + INST.getName()
-			// + " and nearby.");
-			// cards.add(eCard2z);
-
 			return cards;
 
 		default:
-			ECard errorCard = CardFactory
-					.getTemplateCard(CardFactory.Template.UNEXPECTED_ERROR);
-
+			ECard errorCard = new ECard(
+					"Error processing timetable",
+					"Something went wrong but your timetable will return as soon as the problem is resolved.");
+			errorCard.setExpiryTime(Time.getNowTimeAdd(60000));
 			return CardFactory.makeSingleCardList(errorCard);
 
 		}
 		return null;
 	}
+
+	private static Leg getLeg(GMapsLocation l1, GMapsLocation l2, long time,
+			boolean arrivals) throws IOException, ParseException,
+			QueryFailedException {
+		DirectionsQueryURL directionURL = new DirectionsQueryURL(
+				l1.getString(), l2.getString(), true);
+		if (directionURL != null) {
+			if (time > 0) {
+				directionURL.addParam("mode", "transit");
+				directionURL.addParam(arrivals ? "arrival_time"
+						: "departure_time", String.valueOf(time));
+			}
+			Directions directions = Directions.fetch(directionURL);
+			Route route = directions.getRoutes().get(0);
+			for (Leg leg : route.getLegs()) {
+				if (leg == null) {
+					continue;
+				}
+				return leg;
+			}
+		}
+		return null;
+	}
+
 }
