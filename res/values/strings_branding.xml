@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- Student Now -->
+    <!-- 
+    <string name="app_name">Student Grid</string>
+    <string name="app_name_abext">@string/app_name</string>
+    --> 
+    
+    <!-- University of Nottingham -->
+     
+    <string name="app_name">UoN Timetable</string>
+    <string name="app_name_abext">University of Nottingham Timetable</string>       
+       
+    <!-- Extra -->
+   
+    <string name="uni_nottingham">University of Nottingham</string>
+    
+</resources>

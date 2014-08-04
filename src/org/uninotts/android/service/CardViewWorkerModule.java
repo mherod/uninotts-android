@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.studentnow.ECard;
-import org.studentnow.Location;
 import org.studentnow.Static.Fields;
 import org.studentnow.util.QueryFactory;
 import org.studentnow.util.Time;

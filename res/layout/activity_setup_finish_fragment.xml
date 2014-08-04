@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="25sp"
-        android:text="@string/finish"
+        android:text="@string/action_finish"
         android:textSize="36sp" />
 
 </LinearLayout>

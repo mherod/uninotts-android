@@ -3,6 +3,8 @@
 
     <string name="app_name">UoN Timetable</string>
     <string name="app_name_abext">University of Nottingham Timetable</string>
+    
+    
     <string name="uni_nottingham">University of Nottingham</string>
     <string name="timetable">Timetable</string>
     <string name="week">Week</string>

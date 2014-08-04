@@ -6,14 +6,19 @@
         android:showAsAction="never"
         android:title="@string/setupmenu"
         android:visible="true"/>
-    <item android:id="@+id/action_refresh" android:enabled="true" android:showAsAction="never" android:title="@string/refresh" android:visible="true" /><item
+    <item
+        android:id="@+id/action_refresh"
+        android:enabled="true"
+        android:showAsAction="never"
+        android:title="@string/action_refresh"
+        android:visible="true"/>
+    <item
         android:id="@+id/action_settings"
         android:enabled="true"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings"
         android:visible="true"/>
-    
     <item
         android:id="@+id/action_credits"
         android:enabled="true"
