@@ -203,7 +203,8 @@ public class UniNottsInformationProvider implements InformationProvider {
 			}
 		}
 
-		Collection<UniNottsSession> moduleSessions = guidIndexAgent.getIndexedSessions();
+		Collection<UniNottsSession> moduleSessions = guidIndexAgent
+				.getIndexedSessions();
 
 		if (moduleName != null) {
 			Module module = new Module(moduleName);

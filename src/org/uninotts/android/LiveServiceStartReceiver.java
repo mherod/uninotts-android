@@ -10,11 +10,11 @@ import android.util.Log;
 public class LiveServiceStartReceiver extends BroadcastReceiver {
 
 	private final String TAG = getClass().getSimpleName();
-	
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Log.d(TAG, "onReceive called");
-		
+
 		Intent myIntent = new Intent(context, LiveService.class);
 		context.startService(myIntent);
 	}

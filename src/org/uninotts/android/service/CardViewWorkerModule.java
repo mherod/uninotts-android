@@ -112,7 +112,7 @@ public class CardViewWorkerModule extends ServiceModule {
 		// return new Intent(mLiveService, CourseSelectActivity.class);
 		// }
 		// if (ecard.isType(ECard.TRAVEL)) {
-		// 
+		//
 		if (ecard.hasMapCoords()) {
 			HashMap<String, String> params = new HashMap<String, String>();
 			CachedLocation loc = getLastLocation();

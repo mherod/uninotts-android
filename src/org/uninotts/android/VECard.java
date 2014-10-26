@@ -27,7 +27,7 @@ public class VECard extends Card {
 	}
 
 	public VECard(ECard ecard) {
-		this.ecard = ecard;		
+		this.ecard = ecard;
 		if (ecard != null) {
 			title = ecard.getTitle();
 			desc = ecard.getDesc();

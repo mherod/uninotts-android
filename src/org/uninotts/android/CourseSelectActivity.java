@@ -123,7 +123,7 @@ public class CourseSelectActivity extends Activity implements
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view,
 			final int position, long id) {
-		
+
 		Course selection = mResults.get(position);
 		if (selection == null) {
 			return;
@@ -132,8 +132,6 @@ public class CourseSelectActivity extends Activity implements
 				Toast.LENGTH_SHORT).show();
 
 		LiveService mLiveService = serviceLink.getLiveService();
-		
-		
 
 		finish();
 	}
@@ -160,10 +158,10 @@ public class CourseSelectActivity extends Activity implements
 
 				List<Course> responseCourses = null;
 
-//				if (authResponse != null) {
-//					responseCourses = CourseQuery.query(authResponse,
-//							searchQuery[1]);
-//				}
+				// if (authResponse != null) {
+				// responseCourses = CourseQuery.query(authResponse,
+				// searchQuery[1]);
+				// }
 				if (responseCourses == null) {
 
 					retry = true;

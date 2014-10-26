@@ -77,14 +77,14 @@ public class LiveService extends Service implements Runnable {
 
 		// View
 		modules.add(new CardViewWorkerModule(this));
-		
+
 		modules.add(new NotificationModule(this));
-		
+
 		modules.add(new LocationModule(this));
-		
+
 		modules.add(new SignatureCheckModule(this));
 		modules.add(new BugSubmissionModule(this));
-		
+
 		modules.add(serviceNotificationModule);
 
 		for (ServiceModule m : modules) {

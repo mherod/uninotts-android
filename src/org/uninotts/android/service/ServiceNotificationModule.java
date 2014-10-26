@@ -60,7 +60,8 @@ public class ServiceNotificationModule extends ServiceModule {
 
 	@Override
 	public void cycle() {
-		if (mNotificationUpdateThrottle.isDue(updateInterval) || currentCard == null) {
+		if (mNotificationUpdateThrottle.isDue(updateInterval)
+				|| currentCard == null) {
 			mNotificationUpdateThrottle.update();
 
 			ECard newCard = null;

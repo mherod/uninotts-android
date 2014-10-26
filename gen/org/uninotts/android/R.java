@@ -9,12 +9,12 @@ package org.uninotts.android;
 
 public final class R {
     public static final class array {
-        public static final int credits=0x7f0a0000;
-        public static final int navigationdrawer=0x7f0a0005;
-        public static final int pref_example_list_titles=0x7f0a0001;
-        public static final int pref_example_list_values=0x7f0a0002;
-        public static final int pref_sync_frequency_titles=0x7f0a0003;
-        public static final int pref_sync_frequency_values=0x7f0a0004;
+        public static final int credits=0x7f090000;
+        public static final int navigationdrawer=0x7f090005;
+        public static final int pref_example_list_titles=0x7f090001;
+        public static final int pref_example_list_values=0x7f090002;
+        public static final int pref_sync_frequency_titles=0x7f090003;
+        public static final int pref_sync_frequency_values=0x7f090004;
     }
     public static final class attr {
         /** <p>Must be a floating point value, such as "<code>1.2</code>".
@@ -465,65 +465,65 @@ containing a value of this type.
         public static final int tab_unselected_uninottingham=0x7f020074;
     }
     public static final class id {
-        public static final int ScrollView1=0x7f080024;
-        public static final int action_credits=0x7f080037;
-        public static final int action_exit=0x7f080039;
-        public static final int action_finish=0x7f080016;
-        public static final int action_forgot_password=0x7f08003a;
-        public static final int action_login=0x7f080017;
-        public static final int action_refresh=0x7f080036;
-        public static final int action_search=0x7f080038;
-        public static final int action_select_course=0x7f080015;
-        public static final int action_settings=0x7f080034;
-        public static final int action_setup=0x7f080035;
-        public static final int calendarView1=0x7f080028;
-        public static final int cardContent=0x7f08002e;
-        public static final int card_part_map=0x7f080020;
-        public static final int card_part_progress=0x7f08001b;
-        public static final int cards=0x7f08002a;
-        public static final int cardssetup=0x7f080014;
-        public static final int container=0x7f080012;
-        public static final int content=0x7f080029;
-        public static final int creditsList=0x7f080008;
-        public static final int description=0x7f08001a;
-        public static final int drawer_layout=0x7f080005;
-        public static final int email=0x7f08000e;
-        public static final int hybrid=0x7f080004;
-        public static final int imageView_cb=0x7f080021;
-        public static final int imageView_ct=0x7f080019;
-        public static final int left_drawer=0x7f080007;
-        public static final int listView=0x7f080022;
-        public static final int list_institution=0x7f080027;
-        public static final int loading_spinner=0x7f080026;
-        public static final int login=0x7f080010;
-        public static final int login_form=0x7f08000d;
-        public static final int login_status=0x7f08000b;
-        public static final int login_status_message=0x7f08000c;
-        public static final int lvi_credit_line1=0x7f080031;
-        public static final int lvi_credit_line2=0x7f080032;
-        public static final int lvi_credit_line3=0x7f080033;
-        public static final int none=0x7f080000;
-        public static final int normal=0x7f080001;
-        public static final int pager=0x7f080006;
-        public static final int pager_title_strip=0x7f080013;
-        public static final int password=0x7f08000f;
-        public static final int placeholder=0x7f08002c;
-        public static final int progressBar00=0x7f08001c;
-        public static final int progressEndLabel=0x7f08001e;
-        public static final int progressMidLabel=0x7f08001f;
-        public static final int progressStartLabel=0x7f08001d;
-        public static final int resultsListView=0x7f08000a;
-        public static final int satellite=0x7f080002;
-        public static final int section_label=0x7f08002b;
-        public static final int sign_in_button=0x7f080011;
-        public static final int stackContainer=0x7f080030;
-        public static final int stackTitle=0x7f08002f;
-        public static final int sticky=0x7f080023;
-        public static final int tableLayout=0x7f080025;
-        public static final int terrain=0x7f080003;
-        public static final int textView2=0x7f08002d;
-        public static final int title=0x7f080018;
-        public static final int waitingProgressBar=0x7f080009;
+        public static final int ScrollView1=0x7f0b0024;
+        public static final int action_credits=0x7f0b0037;
+        public static final int action_exit=0x7f0b0039;
+        public static final int action_finish=0x7f0b0016;
+        public static final int action_forgot_password=0x7f0b003a;
+        public static final int action_login=0x7f0b0017;
+        public static final int action_refresh=0x7f0b0036;
+        public static final int action_search=0x7f0b0038;
+        public static final int action_select_course=0x7f0b0015;
+        public static final int action_settings=0x7f0b0034;
+        public static final int action_setup=0x7f0b0035;
+        public static final int calendarView1=0x7f0b0028;
+        public static final int cardContent=0x7f0b002e;
+        public static final int card_part_map=0x7f0b0020;
+        public static final int card_part_progress=0x7f0b001b;
+        public static final int cards=0x7f0b002a;
+        public static final int cardssetup=0x7f0b0014;
+        public static final int container=0x7f0b0012;
+        public static final int content=0x7f0b0029;
+        public static final int creditsList=0x7f0b0008;
+        public static final int description=0x7f0b001a;
+        public static final int drawer_layout=0x7f0b0005;
+        public static final int email=0x7f0b000e;
+        public static final int hybrid=0x7f0b0000;
+        public static final int imageView_cb=0x7f0b0021;
+        public static final int imageView_ct=0x7f0b0019;
+        public static final int left_drawer=0x7f0b0007;
+        public static final int listView=0x7f0b0022;
+        public static final int list_institution=0x7f0b0027;
+        public static final int loading_spinner=0x7f0b0026;
+        public static final int login=0x7f0b0010;
+        public static final int login_form=0x7f0b000d;
+        public static final int login_status=0x7f0b000b;
+        public static final int login_status_message=0x7f0b000c;
+        public static final int lvi_credit_line1=0x7f0b0031;
+        public static final int lvi_credit_line2=0x7f0b0032;
+        public static final int lvi_credit_line3=0x7f0b0033;
+        public static final int none=0x7f0b0001;
+        public static final int normal=0x7f0b0002;
+        public static final int pager=0x7f0b0006;
+        public static final int pager_title_strip=0x7f0b0013;
+        public static final int password=0x7f0b000f;
+        public static final int placeholder=0x7f0b002c;
+        public static final int progressBar00=0x7f0b001c;
+        public static final int progressEndLabel=0x7f0b001e;
+        public static final int progressMidLabel=0x7f0b001f;
+        public static final int progressStartLabel=0x7f0b001d;
+        public static final int resultsListView=0x7f0b000a;
+        public static final int satellite=0x7f0b0003;
+        public static final int section_label=0x7f0b002b;
+        public static final int sign_in_button=0x7f0b0011;
+        public static final int stackContainer=0x7f0b0030;
+        public static final int stackTitle=0x7f0b002f;
+        public static final int sticky=0x7f0b0023;
+        public static final int tableLayout=0x7f0b0025;
+        public static final int terrain=0x7f0b0004;
+        public static final int textView2=0x7f0b002d;
+        public static final int title=0x7f0b0018;
+        public static final int waitingProgressBar=0x7f0b0009;
     }
     public static final class layout {
         public static final int activity_cards=0x7f030000;
@@ -555,30 +555,30 @@ containing a value of this type.
         public static final int lvi_credit=0x7f03001a;
     }
     public static final class menu {
-        public static final int about=0x7f0b0000;
-        public static final int activity_card_menu=0x7f0b0001;
-        public static final int activity_search_menu=0x7f0b0002;
-        public static final int activity_setup_menu=0x7f0b0003;
-        public static final int institution_select=0x7f0b0004;
-        public static final int login=0x7f0b0005;
-        public static final int session=0x7f0b0006;
+        public static final int about=0x7f0a0000;
+        public static final int activity_card_menu=0x7f0a0001;
+        public static final int activity_search_menu=0x7f0a0002;
+        public static final int activity_setup_menu=0x7f0a0003;
+        public static final int institution_select=0x7f0a0004;
+        public static final int login=0x7f0a0005;
+        public static final int session=0x7f0a0006;
     }
     public static final class string {
-        public static final int account=0x7f09004c;
-        public static final int account_settings=0x7f090055;
-        public static final int action_exit=0x7f090040;
-        public static final int action_finish=0x7f090060;
-        public static final int action_forgot_password=0x7f090066;
-        public static final int action_help=0x7f09005d;
-        public static final int action_next=0x7f09005e;
-        public static final int action_prev=0x7f09005f;
-        public static final int action_refresh=0x7f09005b;
-        public static final int action_reply=0x7f090031;
-        public static final int action_search=0x7f09005c;
-        public static final int action_settings=0x7f090020;
-        public static final int action_share=0x7f090030;
-        public static final int action_sign_in_register=0x7f090064;
-        public static final int action_sign_in_short=0x7f090065;
+        public static final int account=0x7f08004c;
+        public static final int account_settings=0x7f080055;
+        public static final int action_exit=0x7f080040;
+        public static final int action_finish=0x7f080060;
+        public static final int action_forgot_password=0x7f080066;
+        public static final int action_help=0x7f08005d;
+        public static final int action_next=0x7f08005e;
+        public static final int action_prev=0x7f08005f;
+        public static final int action_refresh=0x7f08005b;
+        public static final int action_reply=0x7f080031;
+        public static final int action_search=0x7f08005c;
+        public static final int action_settings=0x7f080020;
+        public static final int action_share=0x7f080030;
+        public static final int action_sign_in_register=0x7f080064;
+        public static final int action_sign_in_short=0x7f080065;
         /**  Student Now 
  
     <string name="app_name">Student Grid</string>
@@ -586,201 +586,201 @@ containing a value of this type.
     
  University of Nottingham 
          */
-        public static final int app_name=0x7f090019;
-        public static final int app_name_abext=0x7f09001a;
+        public static final int app_name=0x7f080019;
+        public static final int app_name_abext=0x7f08001a;
         /**   Title for notification shown when GooglePlayServices needs to be
         enabled for a application to work. [CHAR LIMIT=70] 
          */
-        public static final int auth_client_needs_enabling_title=0x7f090014;
+        public static final int auth_client_needs_enabling_title=0x7f080014;
         /**   Title for notification shown when GooglePlayServices needs to be
         installed for a application to work. [CHAR LIMIT=70] 
          */
-        public static final int auth_client_needs_installation_title=0x7f090015;
+        public static final int auth_client_needs_installation_title=0x7f080015;
         /**   Title for notification shown when GooglePlayServices needs to be
         udpated for a application to work. [CHAR LIMIT=70] 
          */
-        public static final int auth_client_needs_update_title=0x7f090016;
+        public static final int auth_client_needs_update_title=0x7f080016;
         /**   Title for notification shown when GooglePlayServices is unavailable [CHAR LIMIT=42] 
          */
-        public static final int auth_client_play_services_err_notification_msg=0x7f090017;
+        public static final int auth_client_play_services_err_notification_msg=0x7f080017;
         /**   Requested by string saying which app requested the notification. [CHAR LIMIT=42] 
          */
-        public static final int auth_client_requested_by_msg=0x7f090018;
+        public static final int auth_client_requested_by_msg=0x7f080018;
         /**   Title for notification shown when a bad version of GooglePlayServices
         has been installed and needs correction for an application to work.
         [CHAR LIMIT=70] 
          */
-        public static final int auth_client_using_bad_version_title=0x7f090013;
-        public static final int cantfind=0x7f090036;
-        public static final int card_error_content=0x7f090050;
-        public static final int card_error_title=0x7f09004f;
-        public static final int card_examreminder_desc=0x7f090027;
-        public static final int card_examreminder_title=0x7f090026;
-        public static final int card_offline_content=0x7f09004e;
-        public static final int card_offline_title=0x7f09004d;
-        public static final int card_over_desc=0x7f090025;
-        public static final int card_over_title=0x7f090024;
-        public static final int card_timetableerror_desc=0x7f09002a;
-        public static final int card_timetableerror_title=0x7f090029;
-        public static final int card_weekover_desc=0x7f090028;
+        public static final int auth_client_using_bad_version_title=0x7f080013;
+        public static final int cantfind=0x7f080036;
+        public static final int card_error_content=0x7f080050;
+        public static final int card_error_title=0x7f08004f;
+        public static final int card_examreminder_desc=0x7f080027;
+        public static final int card_examreminder_title=0x7f080026;
+        public static final int card_offline_content=0x7f08004e;
+        public static final int card_offline_title=0x7f08004d;
+        public static final int card_over_desc=0x7f080025;
+        public static final int card_over_title=0x7f080024;
+        public static final int card_timetableerror_desc=0x7f08002a;
+        public static final int card_timetableerror_title=0x7f080029;
+        public static final int card_weekover_desc=0x7f080028;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
         can enable it [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_enable_button=0x7f090006;
+        public static final int common_google_play_services_enable_button=0x7f080006;
         /**  Message in confirmation dialog informing user they need to enable
         Google Play services in application settings [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_enable_text=0x7f090005;
+        public static final int common_google_play_services_enable_text=0x7f080005;
         /**  Title of confirmation dialog informing user they need to enable
         Google Play services in application settings [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_enable_title=0x7f090004;
+        public static final int common_google_play_services_enable_title=0x7f080004;
         /**  Button in confirmation dialog for installing Google Play services [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_install_button=0x7f090003;
+        public static final int common_google_play_services_install_button=0x7f080003;
         /**  (For phones) Message in confirmation dialog informing user that
         they need to install Google Play services (from Play Store) [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_install_text_phone=0x7f090001;
+        public static final int common_google_play_services_install_text_phone=0x7f080001;
         /**  (For tablets) Message in confirmation dialog informing user that
         they need to install Google Play services (from Play Store) [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_install_text_tablet=0x7f090002;
+        public static final int common_google_play_services_install_text_tablet=0x7f080002;
         /**  Title of confirmation dialog informing user that they need to install
         Google Play services (from Play Store) [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_install_title=0x7f090000;
+        public static final int common_google_play_services_install_title=0x7f080000;
         /**  Message in confirmation dialog informing the user that they provided an invalid account. [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_invalid_account_text=0x7f09000c;
+        public static final int common_google_play_services_invalid_account_text=0x7f08000c;
         /**  Title of confirmation dialog informing the user that they provided an invalid account. [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_invalid_account_title=0x7f09000b;
+        public static final int common_google_play_services_invalid_account_title=0x7f08000b;
         /**  Message in confirmation dialog informing the user that a network error occurred. [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_network_error_text=0x7f09000a;
+        public static final int common_google_play_services_network_error_text=0x7f08000a;
         /**  Title of confirmation dialog informing the user that a network error occurred. [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_network_error_title=0x7f090009;
+        public static final int common_google_play_services_network_error_title=0x7f080009;
         /**  Message in confirmation dialog informing user there is an unknown issue in Google Play
         services [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_unknown_issue=0x7f09000d;
+        public static final int common_google_play_services_unknown_issue=0x7f08000d;
         /**  Message in confirmation dialog informing user that Google Play services is not supported on their device [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_unsupported_text=0x7f09000f;
+        public static final int common_google_play_services_unsupported_text=0x7f08000f;
         /**  Title of confirmation dialog informing user that Google Play services is not supported on their device [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_unsupported_title=0x7f09000e;
+        public static final int common_google_play_services_unsupported_title=0x7f08000e;
         /**  Button in confirmation dialog for updating Google Play services [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_update_button=0x7f090010;
+        public static final int common_google_play_services_update_button=0x7f080010;
         /**  Message in confirmation dialog informing user that they need to update
         Google Play services (from Play Store) [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_update_text=0x7f090008;
+        public static final int common_google_play_services_update_text=0x7f080008;
         /**  Title of confirmation dialog informing user that they need to update
         Google Play services (from Play Store) [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_update_title=0x7f090007;
+        public static final int common_google_play_services_update_title=0x7f080007;
         /**  Sign-in button text [CHAR LIMIT=15] 
          */
-        public static final int common_signin_button_text=0x7f090011;
+        public static final int common_signin_button_text=0x7f080011;
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
-        public static final int common_signin_button_text_long=0x7f090012;
-        public static final int drawer_close=0x7f090082;
-        public static final int drawer_example=0x7f090080;
-        public static final int drawer_open=0x7f090081;
-        public static final int error_already_email=0x7f090069;
-        public static final int error_field_error=0x7f09006d;
-        public static final int error_field_required=0x7f09006c;
-        public static final int error_incorrect_password=0x7f09006b;
-        public static final int error_invalid_email=0x7f090068;
-        public static final int error_invalid_password=0x7f09006a;
-        public static final int example_text=0x7f090057;
-        public static final int finish=0x7f090041;
-        public static final int hello_world=0x7f09004a;
-        public static final int help=0x7f09003d;
-        public static final int image=0x7f090054;
-        public static final int login=0x7f090051;
-        public static final int login_explain=0x7f090052;
-        public static final int login_progress_signing_in=0x7f090067;
-        public static final int map=0x7f090053;
-        public static final int next=0x7f09003e;
-        public static final int ok=0x7f09004b;
-        public static final int pref_default_display_name=0x7f090073;
-        public static final int pref_description_social_recommendations=0x7f090071;
-        public static final int pref_header_account=0x7f090075;
+        public static final int common_signin_button_text_long=0x7f080012;
+        public static final int drawer_close=0x7f080082;
+        public static final int drawer_example=0x7f080080;
+        public static final int drawer_open=0x7f080081;
+        public static final int error_already_email=0x7f080069;
+        public static final int error_field_error=0x7f08006d;
+        public static final int error_field_required=0x7f08006c;
+        public static final int error_incorrect_password=0x7f08006b;
+        public static final int error_invalid_email=0x7f080068;
+        public static final int error_invalid_password=0x7f08006a;
+        public static final int example_text=0x7f080057;
+        public static final int finish=0x7f080041;
+        public static final int hello_world=0x7f08004a;
+        public static final int help=0x7f08003d;
+        public static final int image=0x7f080054;
+        public static final int login=0x7f080051;
+        public static final int login_explain=0x7f080052;
+        public static final int login_progress_signing_in=0x7f080067;
+        public static final int map=0x7f080053;
+        public static final int next=0x7f08003e;
+        public static final int ok=0x7f08004b;
+        public static final int pref_default_display_name=0x7f080073;
+        public static final int pref_description_social_recommendations=0x7f080071;
+        public static final int pref_header_account=0x7f080075;
         /**  Example settings for Data & Sync 
  Example settings for Data & Sync 
          */
-        public static final int pref_header_data_sync=0x7f090077;
+        public static final int pref_header_data_sync=0x7f080077;
         /**  Strings related to Settings 
  Strings related to Settings 
  Example General settings 
          */
-        public static final int pref_header_general=0x7f09006f;
+        public static final int pref_header_general=0x7f08006f;
         /**  Example settings for Notifications 
  Example settings for Notifications 
          */
-        public static final int pref_header_notifications=0x7f09007a;
-        public static final int pref_ringtone_silent=0x7f09007d;
-        public static final int pref_title_add_friends_to_messages=0x7f090074;
-        public static final int pref_title_display_name=0x7f090072;
-        public static final int pref_title_logout=0x7f090076;
-        public static final int pref_title_new_message_notifications=0x7f09007b;
-        public static final int pref_title_ringtone=0x7f09007c;
-        public static final int pref_title_social_recommendations=0x7f090070;
-        public static final int pref_title_sync_frequency=0x7f090078;
-        public static final int pref_title_system_sync_settings=0x7f090079;
-        public static final int pref_title_vibrate=0x7f09007e;
-        public static final int prev=0x7f09003f;
+        public static final int pref_header_notifications=0x7f08007a;
+        public static final int pref_ringtone_silent=0x7f08007d;
+        public static final int pref_title_add_friends_to_messages=0x7f080074;
+        public static final int pref_title_display_name=0x7f080072;
+        public static final int pref_title_logout=0x7f080076;
+        public static final int pref_title_new_message_notifications=0x7f08007b;
+        public static final int pref_title_ringtone=0x7f08007c;
+        public static final int pref_title_social_recommendations=0x7f080070;
+        public static final int pref_title_sync_frequency=0x7f080078;
+        public static final int pref_title_system_sync_settings=0x7f080079;
+        public static final int pref_title_vibrate=0x7f08007e;
+        public static final int prev=0x7f08003f;
         /**  Strings related to login 
          */
-        public static final int prompt_email=0x7f090062;
-        public static final int prompt_password=0x7f090063;
-        public static final int refresh=0x7f09002c;
-        public static final int search=0x7f090021;
-        public static final int select_course=0x7f090023;
-        public static final int service_notification_placeholder_text_template=0x7f090059;
-        public static final int service_notification_reliability=0x7f09005a;
-        public static final int service_notification_title_template=0x7f090058;
-        public static final int sessions_notification_placeholder_text_template=0x7f09002f;
-        public static final int sessions_notification_title_template=0x7f09002e;
-        public static final int setup_course_help_dialog=0x7f090048;
-        public static final int setup_select_course=0x7f090046;
-        public static final int setup_select_course_content=0x7f090047;
-        public static final int setup_select_university=0x7f090044;
-        public static final int setup_select_university_content=0x7f090045;
-        public static final int setup_title_=0x7f09003a;
-        public static final int setup_title_selectuni=0x7f090039;
-        public static final int setupmenu=0x7f090038;
-        public static final int swipe_setup=0x7f090042;
-        public static final int swipe_setup_content=0x7f090043;
-        public static final int tap_to_open_your_agenda=0x7f09002b;
-        public static final int text=0x7f090056;
-        public static final int timetable=0x7f09001c;
-        public static final int title_activity_course_search=0x7f090022;
-        public static final int title_activity_credit=0x7f09002d;
-        public static final int title_activity_institution_select=0x7f090049;
-        public static final int title_activity_login=0x7f090061;
-        public static final int title_activity_session=0x7f090032;
-        public static final int title_activity_settings=0x7f09006e;
-        public static final int title_activity_settings2=0x7f09007f;
-        public static final int title_activity_setup_programme=0x7f090037;
-        public static final int title_section1=0x7f090033;
-        public static final int title_section2=0x7f090034;
-        public static final int title_section3=0x7f090035;
+        public static final int prompt_email=0x7f080062;
+        public static final int prompt_password=0x7f080063;
+        public static final int refresh=0x7f08002c;
+        public static final int search=0x7f080021;
+        public static final int select_course=0x7f080023;
+        public static final int service_notification_placeholder_text_template=0x7f080059;
+        public static final int service_notification_reliability=0x7f08005a;
+        public static final int service_notification_title_template=0x7f080058;
+        public static final int sessions_notification_placeholder_text_template=0x7f08002f;
+        public static final int sessions_notification_title_template=0x7f08002e;
+        public static final int setup_course_help_dialog=0x7f080048;
+        public static final int setup_select_course=0x7f080046;
+        public static final int setup_select_course_content=0x7f080047;
+        public static final int setup_select_university=0x7f080044;
+        public static final int setup_select_university_content=0x7f080045;
+        public static final int setup_title_=0x7f08003a;
+        public static final int setup_title_selectuni=0x7f080039;
+        public static final int setupmenu=0x7f080038;
+        public static final int swipe_setup=0x7f080042;
+        public static final int swipe_setup_content=0x7f080043;
+        public static final int tap_to_open_your_agenda=0x7f08002b;
+        public static final int text=0x7f080056;
+        public static final int timetable=0x7f08001c;
+        public static final int title_activity_course_search=0x7f080022;
+        public static final int title_activity_credit=0x7f08002d;
+        public static final int title_activity_institution_select=0x7f080049;
+        public static final int title_activity_login=0x7f080061;
+        public static final int title_activity_session=0x7f080032;
+        public static final int title_activity_settings=0x7f08006e;
+        public static final int title_activity_settings2=0x7f08007f;
+        public static final int title_activity_setup_programme=0x7f080037;
+        public static final int title_section1=0x7f080033;
+        public static final int title_section2=0x7f080034;
+        public static final int title_section3=0x7f080035;
         /**  Extra 
          */
-        public static final int uni_nottingham=0x7f09001b;
-        public static final int week=0x7f09001d;
-        public static final int week_desc=0x7f09001e;
-        public static final int week_later=0x7f09001f;
-        public static final int welcome=0x7f09003b;
-        public static final int welcome_introduction=0x7f09003c;
+        public static final int uni_nottingham=0x7f08001b;
+        public static final int week=0x7f08001d;
+        public static final int week_desc=0x7f08001e;
+        public static final int week_later=0x7f08001f;
+        public static final int welcome=0x7f08003b;
+        public static final int welcome_introduction=0x7f08003c;
     }
     public static final class style {
         public static final int ActionBar_Solid_Studentnow=0x7f07000d;

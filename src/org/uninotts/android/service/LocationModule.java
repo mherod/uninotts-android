@@ -26,7 +26,8 @@ import com.google.android.gms.location.LocationRequest;
 
 public class LocationModule extends ServiceModule implements
 		GooglePlayServicesClient.ConnectionCallbacks,
-		GooglePlayServicesClient.OnConnectionFailedListener, LocationListener, ILocationProvider {
+		GooglePlayServicesClient.OnConnectionFailedListener, LocationListener,
+		ILocationProvider {
 
 	public final static String TAG = LocationModule.class.getSimpleName();
 

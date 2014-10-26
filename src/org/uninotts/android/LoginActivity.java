@@ -207,7 +207,7 @@ public class LoginActivity extends Activity {
 	}
 
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-		//AuthResponse authResponse = null;
+		// AuthResponse authResponse = null;
 
 		LiveService live = serviceLink.getLiveService();
 
@@ -231,9 +231,9 @@ public class LoginActivity extends Activity {
 			if (success) {
 				switch (Responses.OK) { // TODO
 				case Responses.OK:
-//					AccountModule am = (AccountModule) live
-//							.getServiceModule(AccountModule.class);
-//					am.setAuthResponse(authResponse);
+					// AccountModule am = (AccountModule) live
+					// .getServiceModule(AccountModule.class);
+					// am.setAuthResponse(authResponse);
 
 					setResult(RESULT_OK, new Intent());
 
